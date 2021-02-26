@@ -11,6 +11,8 @@ import json
 
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = "\xd5PE\xa3t\x96D\xa2\xae\xc2\xcfIq\xe7\xefk"
+app.config['tokens_blacklist'] = []
 api = Api(app)
 
 
@@ -30,7 +32,6 @@ class User:
             "prenom":self.prenom
             }
 
-
 def get_users(filename="users.json"):
     """Crée les comptes utilisateur"""
     with open(os.path.join("data", filename), "r", encoding="utf8") as data_file:
@@ -43,21 +44,15 @@ def get_users(filename="users.json"):
 
 users = get_users()
 
-
-# la clé (très) secrête
-key = "\xd5PE\xa3t\x96D\xa2\xae\xc2\xcfIq\xe7\xefk"
-
-
-
 def make_token(user):
-    """Génère le auth token"""
+    """Crée le token d'authentification"""
     encode_params = {
         "id": user.id,
         "exp": datetime.datetime.utcnow()+\
         datetime.timedelta(minutes=30)
         }
     try:
-        token = jwt.encode(encode_params, key, algorithm='HS256')
+        token = jwt.encode(encode_params, app.config.get('SECRET_KEY'), algorithm='HS256')
         return token
     except jwt.ExpiredSignatureError:
         return "token expired!"
@@ -71,7 +66,27 @@ def verify_user(nom:str, prenom:str):
         return False
 
 # =====================================================================
+def decode_token(token):
 
+    if token in app.config.get('tokens_blacklist'):
+            resp = jsonify({'status':'fail', 'message': 'expired token'})
+            resp.status_code = 401
+            return resp
+    else :
+        try:
+            data = jwt.decode(token, app.config.get('SECRET_KEY'))
+            current_user = data["id"]
+            return current_user
+
+        except jwt.InvalidTokenError:
+            resp = jsonify({'status':'fail', 'message': 'invalid token'})
+            resp.status_code = 401
+            return resp
+
+        except jwt.ExpiredSignatureError:
+            resp = jsonify({'status':'fail', 'message': 'expired token'})
+            resp.status_code = 401
+            return resp
 
 def token_required(f):
     """Crée le décorateur qui permettra de vérifier la présence
@@ -79,20 +94,24 @@ def token_required(f):
     @wraps(f)
     def decorator(*args, **kwargs):
         token = None
+
+        #On vérifie s'il existe un token d'authentification dans le header
         if 'Authorization' in request.headers:
             token = request.headers['Authorization'].split(" ")[1]
         if not token:
             resp = jsonify({'status':'fail', 'message': 'missing token'})
             resp.status_code = 403
             return resp
-        try:
-            data = jwt.decode(token, key)
-            current_user = data["id"]
-        except:
-            resp = jsonify({'status':'fail', 'message': 'invalid token'})
-            resp.status_code = 401
-            return resp
-        return f(current_user, *args, **kwargs)
+
+        #on décode le token
+        decoded_token = decode_token(token)
+        print(type(decoded_token))
+        if not isinstance(decoded_token, str):
+            return decoded_token
+
+        else :
+            current_user = decoded_token
+            return f(current_user, *args, **kwargs)
     return decorator
 
 
@@ -133,7 +152,7 @@ def save_data(data, filename=file_data):
     """"Enregistre les nouvelles données dans notre fichier de données"""
     with open(os.path.join("data", filename), "w", encoding="utf8") as data_file:
         for place in data:
-            data_file.write(place['geonameid']+"\t"+place['name']+"\t"+place['asciiname']+"\t"+place['alternatenames']+"\t"+place['latitude']+"\t"+place['longitude']+"\t"+place['feature class']+"\t"+place['feature code']+"\t"+place['country code']+"\t"+place['cc2']+"\t"+place['admin1 code']+"\t"+place['admin2 code']+"\t"+place['admin3 code']+"\t"+place['admin4 code']+"\t"+place['population']+"\t"+place['elevation']+"\t"+place['dem']+"\t"+place['timezone']+"\t"+place['modification date'])
+            data_file.write(place['geonameid']+"\t"+place['name']+"\t"+place['asciiname']+"\t"+place['alternatenames']+"\t"+place['latitude']+"\t"+place['longitude']+"\t"+place['feature class']+"\t"+place['feature code']+"\t"+place['country code']+"\t"+place['cc2']+"\t"+place['admin1 code']+"\t"+place['admin2 code']+"\t"+place['admin3 code']+"\t"+place['admin4 code']+"\t"+place['population']+"\t"+place['elevation']+"\t"+place['dem']+"\t"+place['timezone']+"\t"+place['modification date']+"\n")
 
 
 #=========================================================================
@@ -204,12 +223,12 @@ class Data(Resource):
         # sinon on peut ajouter les nouvelles données
         list_id = [d["geonameid"] for d in data]
         if data_add["geonameid"] in list_id:
-            res = {"ERROR": "geonameid existe déjà"}, 400
+            res = {"ERROR": data_add["geonameid"]+"geonameid existe déjà"}, 400
             return res
         else:
-            time = datetime.datetime.utcnow()
+            time = datetime.date.today()
             data_add["modification date"] = str(time)
-            data.append(json.load(data_add))
+            data.append(json.loads(data_add))
             save_data(data)
             res = {"OK": "Lieu ajouté avec succès"}, 200
             return res
@@ -235,7 +254,7 @@ class Data(Resource):
             if d["geonameid"] == geonameid:
                 for key, value in data_edit.items():
                     d[key] = value
-                time = datetime.datetime.utcnow()
+                time = datetime.date.today()
                 d["modification date"] = str(time)
                 save_data(data)
                 res = {"OK": "Données modifées avec succès"}, 200
