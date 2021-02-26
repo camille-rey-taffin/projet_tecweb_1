@@ -75,19 +75,23 @@ def verify_user(nom:str, prenom:str):
 
 def token_required(f):
     """Crée le décorateur qui permettra de vérifier la présence
-    du token dans le header pour chaque requête"""
+    du token dans le Authorization du header pour chaque requête"""
     @wraps(f)
     def decorator(*args, **kwargs):
         token = None
-        if 'x-access-tokens' in request.headers:
-            token = request.headers['x-access-tokens']
+        if 'Authorization' in request.headers:
+            token = request.headers['Authorization'].split(" ")[1]
         if not token:
-            return {'message': 'token manquant'}
+            resp = jsonify({'status':'fail', 'message': 'missing token'})
+            resp.status_code = 403
+            return resp
         try:
             data = jwt.decode(token, key)
             current_user = data["id"]
         except:
-            return {'message': 'token invalide'}
+            resp = jsonify({'status':'fail', 'message': 'invalid token'})
+            resp.status_code = 401
+            return resp
         return f(current_user, *args, **kwargs)
     return decorator
 
@@ -151,7 +155,7 @@ class Login(Resource):
             token = make_token(user)
             return {'User':user.to_json(), 'Token': token.decode('UTF-8')}
         else:
-            return {"ERROR":"Username ou mot de passe incorrect"}, 400
+            return {"ERROR":"Nom ou prénom incorrect"}, 400
 
 
 class Data(Resource):
@@ -265,7 +269,7 @@ class Data(Resource):
 
 
 api.add_resource(Login, "/", "/login")
-api.add_resource(Data, "/data")
+api.add_resource(Data, "/data", "/data/<asciiname>")
 
 if __name__ == '__main__':
     app.run(debug=True)
