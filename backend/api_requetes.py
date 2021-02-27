@@ -15,8 +15,7 @@ app = Flask(__name__)
 api = Api(app)
 
 # Config options - Make sure you created a 'config.py' file.
-app.config.from_object('config')
-app.config['SECRET_KEY'] = "\xd5PE\xa3t\x96D\xa2\xae\xc2\xcfIq\xe7\xefk"
+app.config.from_pyfile('config.py')
 app.config['tokens_blacklist'] = []
 # To get one variable, tape app.config['MY_VARIABLE']
 
