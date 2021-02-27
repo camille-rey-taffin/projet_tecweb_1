@@ -41,17 +41,59 @@ class Data(Resource):
         from backend.models import db, Content
         # Renvoie toutes les données
         if geonameid==None:
-            return [element.serialize() for element in Content.query.all()], 200
+            resp = jsonify({'data': [element.serialize() for element in Content.query.all()]})
+            resp.status_code = 200
+            return resp
 
         # Renvoie les données filtrées sur l'asciiname
         # Si aucune donnée n'est trouvée une erreur est renvoyée
         else:
-            if not Content.query.filter_by(geonameid=geonameid):
-                res = {"ERROR":"Aucun lieu n'a été trouvé"}, 404
+            data = Content.query.filter_by(geonameid=geonameid).first()
+            if not data:
+                resp = jsonify({'status':'fail', 'message': 'geonameid not found'})
+                resp.status_code = 404
+                return resp
             else :
-                return [element.serialize() for element in Content.query.filter_by(geonameid=geonameid)], 200
+                resp = jsonify({'data': data.serialize()})
+                resp.status_code = 200
+                return resp
 
+    def put(self):
+        """Ajoute des données"""
 
+        from backend.models import db, Content
+        #On reçoit les informations à ajouter
+        #envoyées par l'utilisateur
+        data_add = request.json
+
+        #on vérifie qu'un geonameid est bien précisé dans les paramètres
+        if "geonameid" not in data_add :
+            resp = jsonify({'status': 'fail', 'message' : "geoname id is required for new element"})
+            resp.status_code = 400
+            return resp
+            
+        #On suppose que le geonameid est unique,
+        #on l'utilise donc pour identifier les éléments
+        #Si le geonameid existe déjà on renvoie une erreur,
+        #sinon on peut ajouter les nouvelles données
+        element =  Content.query.filter_by(geonameid=data_add["geonameid"]).first()
+        if element:
+            resp = jsonify({'status': 'fail', 'message' : data_add["geonameid"]+" existe déjà"})
+            resp.status_code = 400
+            return resp
+        else:
+            fields = ["name", "asciiname", "alternatenames", "latitude", "longitude", "feature_class", "feature_code", "country_code", "cc2", "admin1_code", "admin2_code", "admin3_code", "admin4_code", "population", "elevation", "dem", "timezone"]
+            for column in fields:
+                if column not in data_add.keys():
+                    data_add[column] = ""
+            time = datetime.date.today()
+            data_add["modification_date"] = str(time)
+            new_data = Content(geonameid=data_add["geonameid"], name=data_add["name"], asciiname=data_add["asciiname"], alternatenames=data_add["alternatenames"], latitude=data_add["latitude"], longitude=data_add["longitude"], feature_class=data_add["feature_class"], feature_code=data_add["feature_code"], country_code=data_add["country_code"], cc2=data_add["cc2"], admin1_code=data_add["admin1_code"], admin2_code=data_add["admin2_code"], admin3_code=data_add["admin3_code"], admin4_code=data_add["admin4_code"], population=data_add["population"], elevation=data_add["elevation"], dem=data_add["dem"], timezone=data_add["timezone"], modification_date=data_add["modification_date"])
+            db.session.add(new_data)
+            db.session.commit()
+            resp = jsonify({'status': 'success', 'message' : "new data "+data_add["geonameid"]+" successfully added"})
+            resp.status_code = 400
+            return resp
 
 
     # @token_required
@@ -134,6 +176,49 @@ class Data(Resource):
             # res = {"ERROR": "Lieu non trouvé"}, 404
             # return res
 
+class DataSearch(Resource):
+    """Gere la recherche d'information"""
+
+    @token_required
+    def get(self, current_id):
+
+        from backend.models import db, Content
+
+        params = request.args
+        if not params:
+            resp = jsonify({'status':'failed', 'message':'missing parameters'})
+            resp.status_code = 412
+            return resp
+        geonameid = params.get('geonameid')
+        name = params.get('name')
+        asciiname = params.get('asciiname')
+        alternatename = params.get('alternatename')
+        latitude = params.get('latitude')
+        longitude = params.get('longitude')
+        country_code = params.get('country_code')
+
+        query_object = Content.query
+        if geonameid:
+            query_object = query_object.filter_by(geonameid=geonameid)
+        if name:
+            query_object = query_object.filter_by(name=name)
+        if asciiname:
+            query_object = query_object.filter_by(asciiname=asciiname)
+        if alternatename:
+            pattern = '%'+alternatename+'%'
+            query_object = query_object.filter(Content.alternatenames.like(pattern))
+        if latitude:
+            query_object = query_object.filter_by(latitude=latitude)
+        if longitude:
+            query_object = query_object.filter_by(longitude=longitude)
+        if country_code:
+            query_object = query_object.filter_by(country_code=country_code)
+
+        resp = jsonify({'results':[element.serialize() for element in query_object.all()]})
+        resp.status_code = 200
+        return resp
+
 
 api.add_resource(Login, "/", "/login")
 api.add_resource(Data, "/data", "/data/<geonameid>")
+api.add_resource(DataSearch, "/data/search")
