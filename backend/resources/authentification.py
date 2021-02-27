@@ -20,6 +20,10 @@ class Login(Resource):
         user = verify_user(info["name"], info["firstname"], )
         if user:
             token = make_token(user)
-            return {'User':user.to_json(), 'Token': token.decode('UTF-8')}
+            resp = jsonify({'status':'success', 'User':user.to_json(), 'Token': token.decode('UTF-8')})
+            resp.status_code = 200
+            return resp
         else:
-            return {"ERROR":"Nom ou prénom incorrect"}, 400
+            resp = jsonify({'status':'fail', 'message' : "Nom ou prénom incorrect"})
+            resp.status_code = 400
+            return resp
