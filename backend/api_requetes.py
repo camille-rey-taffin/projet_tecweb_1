@@ -19,5 +19,6 @@ app.config.from_pyfile('config.py')
 from .resources import  *
 
 api.add_resource(Login, "/", "/login")
+api.add_resource(Logout, "/logout")
 api.add_resource(Data, "/data", "/data/<geonameid>")
 api.add_resource(DataSearch, "/data/search")

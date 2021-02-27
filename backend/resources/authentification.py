@@ -27,3 +27,18 @@ class Login(Resource):
             resp = jsonify({'status':'fail', 'message' : "Nom ou prénom incorrect"})
             resp.status_code = 400
             return resp
+
+class Logout(Resource):
+    """Logout"""
+
+    @token_required
+    def get(self, current_user):
+        """Blacklist le token en cours"""
+
+        # On récupère le token dans le header
+        token = request.headers['Authorization'].split(" ")[1]
+        tokens_blacklist.append(token)
+
+        resp = jsonify({'status':'succes', 'message' : "successfully logged out"})
+        resp.status_code = 400
+        return resp
