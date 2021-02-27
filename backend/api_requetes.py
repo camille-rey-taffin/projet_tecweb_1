@@ -24,8 +24,8 @@ from backend.models import db, Content
 class Data(Resource):
     """Gère la manipulation des données"""
 
-    #@token_required
-    def get(self, geonameid=None):
+    @token_required
+    def get(self, current_user, geonameid=None):
         """Gère l'accès et le filtrage des données"""
 
         # Renvoie toutes les données
@@ -47,7 +47,8 @@ class Data(Resource):
                 resp.status_code = 200
                 return resp
 
-    def put(self, geonameid = None):
+    @token_required
+    def put(self, current_user, geonameid = None):
         """Ajoute des données"""
 
         # On reçoit les informations à ajouter
