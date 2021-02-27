@@ -1,3 +1,5 @@
+# coding: utf-8
+
 from flask import Flask, request, json, jsonify
 from functools import wraps
 import datetime
@@ -7,21 +9,21 @@ from ..config import SECRET_KEY
 tokens_blacklist = []
 
 def make_token(user):
-    """Crée le token d'authentification"""
+    """Crée un token d'authentification valable 60 mins """
+
     encode_params = {
         "id": user.id,
         "exp": datetime.datetime.utcnow()+\
-        datetime.timedelta(minutes=30)
+        datetime.timedelta(minutes = 60)
         }
-    try:
-        token = jwt.encode(encode_params, SECRET_KEY, algorithm='HS256')
-        return token
-    except jwt.ExpiredSignatureError:
-        return "token expired!"
 
+    token = jwt.encode(encode_params, SECRET_KEY, algorithm='HS256')
+    return token
 
 def decode_token(token):
+    """ Décode un token en paramètre """
 
+    # vérification que le token n'est pas blacklisté (typiquement les tokens après logout)
     if token in tokens_blacklist:
             resp = jsonify({'status':'fail', 'message': 'expired token'})
             resp.status_code = 401
@@ -43,13 +45,14 @@ def decode_token(token):
             return resp
 
 def token_required(f):
-    """Crée le décorateur qui permettra de vérifier la présence
-    du token dans le Authorization du header pour chaque requête"""
+    """ Décorateur qui permet de restreindre l'accès à des ressources, en vérifiant
+    la présence d'un token d'identification correct dans le Authorization du header"""
+
     @wraps(f)
     def decorator(*args, **kwargs):
         token = None
 
-        #On vérifie s'il existe un token d'authentification dans le header
+        # On vérifie s'il existe un token d'authentification dans le header
         if 'Authorization' in request.headers:
             token = request.headers['Authorization'].split(" ")[1]
         if not token:
@@ -59,10 +62,13 @@ def token_required(f):
 
         #on décode le token
         decoded_token = decode_token(token)
+
+        # si la fonction renvoie un message d'erreur, on renvoie ce message d'erreur
         if not isinstance(decoded_token, str):
             return decoded_token
 
         else :
             current_user = decoded_token
             return f(current_user, *args, **kwargs)
+
     return decorator

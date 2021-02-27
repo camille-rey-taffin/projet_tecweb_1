@@ -1,7 +1,7 @@
 import os
 from flask import Flask
 
-from .api_requetes import app
+from .api_rest import app
 from . import models
 
 # Connect sqlalchemy to app

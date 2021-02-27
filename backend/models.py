@@ -1,13 +1,14 @@
 # coding: utf-8
 
 import os
-from .api_requetes import app
+from .api_rest import app
 from flask_sqlalchemy import SQLAlchemy
 import datetime
 import logging as lg
 
 db = SQLAlchemy(app)
 
+# modèle pour les lieux dans la BDD
 class Content(db.Model):
     geonameid = db.Column(db.String, primary_key=True)
     name = db.Column(db.String, nullable=False)
@@ -50,7 +51,7 @@ class Content(db.Model):
         self.timezone = timezone
         self.modification_date = modification_date
 
-    def serialize(self):
+    def to_json(self):
         row = {}
         row['geonameid'] = self.geonameid
         row['name'] = self.name
@@ -74,6 +75,7 @@ class Content(db.Model):
         return row
 
 
+# fonction pour initialiser la BDD à partir du fichier txt
 def init_db():
     db.drop_all()
     db.create_all()

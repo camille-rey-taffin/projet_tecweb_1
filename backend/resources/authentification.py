@@ -1,44 +1,60 @@
+# coding: utf-8
+
 from flask import Flask, request, json, jsonify, make_response, Response
 from flask_restful import Resource
 from ..utils import *
 from .users import *
 
-
 class Login(Resource):
-    """Login"""
+    """Ressource Login"""
 
     def post(self):
         """"Crée le token d'un utilisateur si les informations reçues
         correspondent bien à un compte utilisateur"""
 
-        # On récupère les informations
+        #On vérifie que l'utilisateur n'est pas déjà logged in
+        if 'Authorization' in request.headers:
+            token = request.headers['Authorization'].split(" ")[1]
+            decoded_token = decode_token(token)
+            if isinstance(decoded_token, str):
+                resp = jsonify({ "status" : "success", "message" : "already logged in", "User_id" : decoded_token, "Token" : token})
+                resp.status_code = 200
+                return resp
+
+        # On récupère les informations du body de la requête POST
         info = request.json
 
         # On vérifie que les identifiants correpondent à un utilisateur
         # Si oui on crée le token, l'utilisateur correspondant et le token sont renvoyés
         # Si non, une erreur est renvoyé
-        user = verify_user(info["name"], info["firstname"], )
-        if user:
+        try :
+            user = verify_user(info["name"], info["firstname"])
             token = make_token(user)
             resp = jsonify({'status':'success', 'User':user.to_json(), 'Token': token.decode('UTF-8')})
             resp.status_code = 200
             return resp
-        else:
-            resp = jsonify({'status':'fail', 'message' : "Nom ou prénom incorrect"})
+
+        except KeyError :
+            resp = jsonify({"status" : "fail", "message" : "wrong authentification fields ('name' and 'firstname' required)"})
             resp.status_code = 400
             return resp
 
+        except ValueError :
+            resp = jsonify({'status':'fail', 'message' : "Incorrect name and/or firstname"})
+            resp.status_code = 401
+            return resp
+
 class Logout(Resource):
-    """Logout"""
+    """Ressource Logout"""
 
     @token_required
     def get(self, current_user):
-        """Blacklist le token en cours"""
+        """Procédure de logout (blacklist le token en cours)"""
 
-        # On récupère le token dans le header
+        # On récupère le token dans le header et on l'ajoute à la blacklist
         token = request.headers['Authorization'].split(" ")[1]
         tokens_blacklist.append(token)
 
         resp = jsonify({'status':'succes', 'message' : "successfully logged out"})
-        resp.status_code = 400
+        resp.status_code = 200
         return resp

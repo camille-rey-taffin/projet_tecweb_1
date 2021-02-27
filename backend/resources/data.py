@@ -1,3 +1,5 @@
+# coding: utf-8
+
 from flask import Flask, request, json, jsonify, make_response, Response
 from flask_restful import Resource
 from flask_sqlalchemy import SQLAlchemy, sqlalchemy
@@ -6,19 +8,19 @@ from ..utils import *
 from backend.models import db, Content
 
 class Data(Resource):
-    """Gère la manipulation des données"""
+    """Ressource pourla manipulation des données"""
 
     @token_required
     def get(self, current_user, geonameid=None):
-        """Gère l'accès et le filtrage des données"""
+        """Gère l'accès aux données en lecture"""
 
         # Renvoie toutes les données
         if geonameid==None:
-            resp = jsonify({'data': [element.serialize() for element in Content.query.all()]})
+            resp = jsonify({'data': [element.to_json() for element in Content.query.all()]})
             resp.status_code = 200
             return resp
 
-        # Renvoie les données filtrées sur l'asciiname
+        # Renvoie les données d'un lieu précis filtré par geonameid
         # Si aucune donnée n'est trouvée une erreur est renvoyée
         else:
             data = Content.query.filter_by(geonameid=geonameid).first()
@@ -27,7 +29,7 @@ class Data(Resource):
                 resp.status_code = 404
                 return resp
             else :
-                resp = jsonify({'data': data.serialize()})
+                resp = jsonify({'data': data.to_json()})
                 resp.status_code = 200
                 return resp
 
@@ -35,19 +37,18 @@ class Data(Resource):
     def put(self, current_user, geonameid = None):
         """Ajoute des données"""
 
-        # On reçoit les informations à ajouter
-        # envoyées par l'utilisateur
+        # On reçoit les informations à ajouter envoyées dans le body
         data_add = request.json
 
         # on vérifie qu'un geonameid est bien précisé
         if geonameid == None:
-            resp = jsonify({'status':'fail', 'message': 'geonameid to create is missing'})
+            resp = jsonify({"status" : "fail", "message" : "geonameid to create is missing"})
             resp.status_code = 400
             return resp
 
-        # on vérifie que des données à modifier sont bien précisées (au minimum le name)
+        # on vérifie que des données à modifier sont bien précisées (au minimum le champ 'name')
         if not data_add or not data_add.get("name"):
-            resp = jsonify({'status':'failed', 'message':'missing name field of data to create'})
+            resp = jsonify({"status" : "failed", "message" : "missing 'name' field of data to create"})
             resp.status_code = 400
             return resp
 
@@ -56,21 +57,24 @@ class Data(Resource):
         # Si le geonameid existe déjà on renvoie une erreur,
         # sinon on peut ajouter les nouvelles données
         element_exists =  Content.query.filter_by(geonameid = geonameid).first()
+
         if element_exists:
             resp = jsonify({'status': 'fail', 'message' : geonameid + " existe déjà"})
             resp.status_code = 409
             return resp
         else:
+            data_add["geonameid"] = geonameid
             time = datetime.date.today()
             data_add["modification_date"] = str(time)
-            data_add["geonameid"] = geonameid
+
             try :
                 new_data = Content(**data_add)
                 db.session.add(new_data)
                 db.session.commit()
 
+            # cas ou les données à renseigner ne respectent pas le format de la BDD
             except (sqlalchemy.exc.InvalidRequestError, TypeError) as e :
-                resp = jsonify({'status': 'fail', 'message' : "wrong format (field doest not exist in db)"})
+                resp = jsonify({'status': 'fail', 'message' : "wrong format (field does not exist in db)"})
                 resp.status_code = 400
                 return resp
 
@@ -78,13 +82,11 @@ class Data(Resource):
             resp.status_code = 200
             return resp
 
-
     @token_required
     def post(self, current_user, geonameid = None):
-        """Modifie"""
+        """Modifie les données d'un lieu"""
 
-        # On reçoit les informations à modifier
-        # envoyées par l'utilisateur
+        # On reçoit les informations à modifier envoyées dans le body
         data_modify = request.json
 
         # on vérifie qu'un geonameid est bien précisé
@@ -116,13 +118,14 @@ class Data(Resource):
             resp = jsonify({'status': 'fail', 'message' : geonameid +" does not exist in database"})
             resp.status_code = 404
             return resp
+
         else:
-            # on vérifie que les champs à modifier sont bien compatibles avec le format de la BDD
             try :
                 element.update(data_modify)
                 db.session.commit()
-            except sqlalchemy.exc.InvalidRequestError as e :
-                resp = jsonify({'status': 'fail', 'message' : "wrong format (field doest not exist in db)"})
+
+            except sqlalchemy.exc.InvalidRequestError:
+                resp = jsonify({'status': 'fail', 'message' : "wrong format (field does not exist in db)"})
                 resp.status_code = 400
                 return resp
 
@@ -133,7 +136,7 @@ class Data(Resource):
 
     @token_required
     def delete(self, current_user, geonameid = None):
-        """Supprime des données"""
+        """Supprime les données d'un lieu précis"""
 
         # On suppose que le geonameid est unique,
         # on l'utilise donc pour identifier les éléments
@@ -161,31 +164,37 @@ class Data(Resource):
                 return resp
 
 class DataSearch(Resource):
-    """Gere la recherche d'information"""
+    """Gere la recherche de données par filtrage en fonction des champs"""
 
     @token_required
     def get(self, current_user):
 
         params = request.args
+
+        # on vérifie qu'au moins un filtre a été renseigné
         if not params:
-            resp = jsonify({'status':'failed', 'message':'missing parameters'})
+            resp = jsonify({'status' : 'failed', 'message' : 'missing parameter(s) for filtering'})
             resp.status_code = 412
             return resp
         filtres = dict(params)
 
+        # recherche
         query_object = Content.query
         try:
+            # dans le cas d'un filtre alternatename, on cherche la présence d'une substring dans le champ
             if filtres.get('alternatename'):
-                pattern = '%'+filtres.get('alternatename')+'%'
-                query_object = query_object.filter(Content.alternatenames.like(pattern))
+                pattern = '%' + filtres.get('alternatename') + '%'
+                query_object = query_object.filter( Content.alternatenames.like(pattern) )
                 del filtres['alternatename']
+
+            # application des autres filtres
             query_object = query_object.filter_by(**filtres)
 
         except sqlalchemy.exc.InvalidRequestError as e :
-            resp = jsonify({'status': 'fail', 'message' : "wrong format (search field doest not exist in db)"})
+            resp = jsonify({'status': 'fail', 'message' : "wrong format (filter field doest not exist in db)"})
             resp.status_code = 400
             return resp
 
-        resp = jsonify({'results':[element.serialize() for element in query_object.all()]})
+        resp = jsonify({'results' : [element.to_json() for element in query_object.all()]})
         resp.status_code = 200
         return resp
