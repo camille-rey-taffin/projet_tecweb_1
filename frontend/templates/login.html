@@ -3,7 +3,7 @@
 <header class="masthead bg-info text-white text-center" style="max-height: 400px;padding:120px">
     <div class="container d-flex align-items-center flex-column">
         <!-- Masthead Avatar Image-->
-        <img class="masthead-avatar mb-5" style="width:100px; height:100px;" src="static/img/globe.png" alt="" />
+        <img class="masthead-avatar mb-5" style="width:100px; height:100px;" src="/static/img/globe.png" alt="" />
         <!-- Masthead Heading-->
         <h1 class="masthead-heading text-uppercase mb-0">Plateforme Digidata</h1>
         <!-- Icon Divider-->
@@ -12,8 +12,6 @@
             <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
             <div class="divider-custom-line"></div>
         </div>
-        <!-- Masthead Subheading-->
-        <p class="masthead-subheading font-weight-light mb-0">Du digital et des data, c'est Digidata !</p>
     </div>
 </header>
 {% endblock %}
@@ -23,21 +21,35 @@
       <div class="container">
           <!-- Contact Section Heading-->
           <h2 class=" text-center text-uppercase text-secondary ">Login</h2>
+          <br/>
+          {% if login == False %}
           <!-- Login Form-->
+          {% if fail  %}
+
+              {% if error == 'wrong_id'  %}
+            <p class="lead" style="text-align: center"> Mot de passe ou identifiant incorrect. Veuillez réessayer :</p>
+              {% endif %}
+              {% if error == 'login_required'  %}
+            <p class="lead" style="text-align: center"> Identification requise pour accéder aux données, veuillez vous identifier :</p>
+              {% endif %}
+              {% if error == 'invalid_token'  %}
+            <p class="lead" style="text-align: center"> Votre session est expirée ou invalide, veuillez vous ré-authentifier :</p>
+              {% endif %}
+          {% endif %}
           <div class="row">
               <div class="col-lg-8 mx-auto">
-                  <form id="loginForm" name="sentMessage" novalidate="novalidate">
+                  <form id="loginForm" name="loginForm" method="post">
                       <div class="control-group">
                           <div class="form-group floating-label-form-group controls mb-0 pb-2">
                               <label>Nom</label>
-                              <input class="form-control" id="name" type="text" placeholder="Nom" required="required" data-validation-required-message="Entrez votre nom" />
+                              <input class="form-control" name="name" id="name" type="text" placeholder="Nom" data-validation-required-message="Entrez votre nom" required />
                               <p class="help-block text-danger"></p>
                           </div>
                       </div>
                       <div class="control-group">
                           <div class="form-group floating-label-form-group controls mb-0 pb-2">
                               <label>Prénom</label>
-                              <input class="form-control" id="firstname" type="text" placeholder="Prénom" required="required" data-validation-required-message="Entrez votre prénom" />
+                              <input class="form-control" name="firstname" id="firstname" type="text" placeholder="Prénom" data-validation-required-message="Entrez votre prénom" required/>
                               <p class="help-block text-danger"></p>
                           </div>
                       </div>
@@ -47,6 +59,12 @@
                   </form>
               </div>
           </div>
+          {% endif %}
+
+          {% if login %}
+          <p class="lead" style="text-align: center"> Bonjour {{ prenom }} {{ nom }}, vous êtes bien connecté !</p>
+        <a href="{{ url_for('logout') }}">  <button class="btn btn-primary btn-xl"> Se déconnecter</button> </a>
+          {% endif %}
       </div>
   </section>
 {% endblock %}

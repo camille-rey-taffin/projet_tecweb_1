@@ -1,0 +1,199 @@
+{% extends "base.html" %}
+{% block masthead %}
+<header class="masthead bg-info text-white text-center" style="max-height: 400px;padding:120px">
+    <div class="container d-flex align-items-center flex-column">
+        <!-- Masthead Avatar Image-->
+        <img class="masthead-avatar mb-5" style="width:100px; height:100px;" src="/static/img/globe.png" alt="" />
+        <!-- Masthead Heading-->
+        <h1 class="masthead-heading text-uppercase mb-0">Plateforme Digidata</h1>
+        <!-- Icon Divider-->
+        <div class="divider-custom divider-light">
+            <div class="divider-custom-line"></div>
+            <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+            <div class="divider-custom-line"></div>
+        </div>
+    </div>
+</header>
+{% endblock %}
+{% block content %}
+  <!-- Search Section-->
+  <section class="page-section" id="Login">
+      <div class="container">
+          <!-- DataSearch Section Heading-->
+          <h2 class=" text-center text-uppercase text-secondary ">Recherche de données</h2>
+          <br/>
+          <!-- Search Form-->
+          <div class="row">
+              <div class="col-lg-8 mx-auto">
+                  <form id="loginForm" name="searchForm" method="get" novalidate="novalidate">
+                      <div class="form-row">
+                          <div class="form-group col-md-4">
+                              <label for="geoid">geonameid</label>
+                              <input class="form-control" id="geonameid" name="geonameid" type="text" placeholder="1234567" />
+                          </div>
+                          <div class="form-group col-md-4">
+                              <label for="name">nom</label>
+                              <input class="form-control" id="name" name="name" type="text" placeholder="La Réunion" />
+                          </div>
+                          <div class="form-group col-md-4">
+                              <label for="asciiname">asciiname</label>
+                              <input class="form-control" id="asciiname" name="asciiname" type="text" placeholder="La Reunion" />
+                          </div>
+                      </div>
+                      <div class="form-row">
+                          <div class="form-group col-md-4">
+                              <label for="alternatename">Autre nom</label>
+                              <input class="form-control" id="alternatename" name="alternatename" type="text" placeholder="reunion" />
+                          </div>
+                          <div class="form-group col-md-4">
+                              <label for="latitude">latitude</label>
+                              <input class="form-control" id="latitude" name="latitude" type="text" placeholder="777777.77" />
+                          </div>
+                          <div class="form-group col-md-4">
+                              <label for="longitude">longitude</label>
+                              <input class="form-control" id="longitude" name="longitude" type="text" placeholder="777777.77" />
+                          </div>
+                      </div>
+                      <div class="form-row">
+                          <div class="form-group col-md-4">
+                              <label for="feature_class">classe feature</label>
+                              <input class="form-control" id="feature_class" name="feature_class" type="text" placeholder="" />
+                          </div>
+                          <div class="form-group col-md-4">
+                              <label for="feature_code">code feature</label>
+                              <input class="form-control" id="feature_code" name="feature_code" type="text" placeholder="" />
+                          </div>
+                          <div class="form-group col-md-4">
+                              <label for="country_code">code pays</label>
+                              <input class="form-control" id="country_code" name="country_code" type="text" placeholder="FR" />
+                          </div>
+                      </div>
+                      <div class="form-row">
+                          <div class="form-group col-md-4">
+                              <label for="cc2">cc2</label>
+                              <input class="form-control" id="cc2" name="cc2" type="text" placeholder="" />
+                          </div>
+                          <div class="form-group col-md-4">
+                              <label for="admin1_code">code admin1</label>
+                              <input class="form-control" id="admin1_code" name="admin1_code" type="text" placeholder="" />
+                          </div>
+                          <div class="form-group col-md-4">
+                              <label for="admin2_code">code admin2</label>
+                              <input class="form-control" id="admin2_code" name="admin2_code" type="text" placeholder="" />
+                          </div>
+                      </div>
+                      <div class="form-row">
+                          <div class="form-group col-md-4">
+                              <label for="admin3_code">code admin3</label>
+                              <input class="form-control" id="admin3_code" name="admin3_code" type="text" placeholder="" />
+                          </div>
+                          <div class="form-group col-md-4">
+                              <label for="admin4_code">code admin4</label>
+                              <input class="form-control" id="admin4_code" name="admin4_code" type="text" placeholder="" />
+                          </div>
+                          <div class="form-group col-md-4">
+                              <label for="population">population</label>
+                              <input class="form-control" id="population" name="population" type="text" placeholder="" />
+                          </div>
+                      </div>
+                      <div class="form-row">
+                          <div class="form-group col-md-4">
+                              <label for="elevation">elevation</label>
+                              <input class="form-control" id="elevation" name="elevation" type="text" placeholder="" />
+                          </div>
+                          <div class="form-group col-md-4">
+                              <label for="dem">dem</label>
+                              <input class="form-control" id="dem" name="dem" type="text" placeholder="" />
+                          </div>
+                          <div class="form-group col-md-4">
+                              <label for="timezone">Fuseau horaire</label>
+                              <input class="form-control" id="timezone" name="timezone" type="text" placeholder="Europe/Paris" />
+                          </div>
+                      </div>
+                      <div class="form-row">
+                          <div class="form-group col-md-4">
+                              <label for="modification_date">date de modification</label>
+                              <input class="form-control" id="modification_date" name="modification_date" type="text" placeholder="" />
+                          </div>
+                      </div>
+                      <br />
+                      <div id="success"></div>
+                      <div class="form-group"><button class="btn btn-primary btn-xl" id="loginButton" type="submit">Rechercher</button></div>
+                  </form>
+              </div>
+          </div>
+      </div>
+  </section>
+  {% if search == True %}
+  <!-- Results Section-->
+  <h2 class=" text-center text-uppercase text-secondary ">Résultats</h2>
+  {% if results|length == 0 %}
+    <div class="container">
+      <h1 style="text-align:center"> <i class="fas fa-thumbs-down "></i> Aucun résultat </h1>
+    </div>
+  {% else %}
+
+  <div class="overflow-auto p-3 mb-3 mb-md-0 mr-md-3 bg-light" style="max-height: 600px;width: 70%; margin-left:15%">
+  <table class="table" style="width:70%">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Resultat</th>
+        <th scope="col">geonameid</th>
+        <th scope="col">nom</th>
+        <th scope="col">asciiname</th>
+        <th scope="col">alternatenames</th>
+        <th scope="col">latitude</th>
+        <th scope="col">longitude</th>
+        <th scope="col">feature_class</th>
+        <th scope="col">feature_code</th>
+        <th scope="col">country_code</th>
+        <th scope="col">cc2</th>
+        <th scope="col">admin1_code</th>
+        <th scope="col">admin2_code</th>
+        <th scope="col">admin3_code</th>
+        <th scope="col">admin4_code</th>
+        <th scope="col">population</th>
+        <th scope="col">elevation</th>
+        <th scope="col">dem</th>
+        <th scope="col">timezone</th>
+        <th scope="col">modification_date</th>
+
+      </tr>
+    </thead>
+    <tbody>
+      {% for result in results %}
+      <tr>
+        <th scope="row">{{ loop.index }}</th>
+        <td><a href="/data/{{result['geonameid']}}">{{result['geonameid']}}</a></td>
+        <td>{{result['name']}}</td>
+        <td>{{result['asciiname']}}</td>
+        <td>{{result['alternatenames']}}</td>
+        <td>{{result['latitude']}}</td>
+        <td>{{result['longitude']}}</td>
+        <td>{{result['feature_class']}}</td>
+        <td>{{result['feature_code']}}</td>
+        <td>{{result['country_code']}}</td>
+        <td>{{result['cc2']}}</td>
+        <td>{{result['admin1_code']}}</td>
+        <td>{{result['admin2_code']}}</td>
+        <td>{{result['admin3_code']}}</td>
+        <td>{{result['admin4_code']}}</td>
+        <td>{{result['population']}}</td>
+        <td>{{result['elevation']}}</td>
+        <td>{{result['dem']}}</td>
+        <td>{{result['timezone']}}</td>
+        <td>{{result['modification_date']}}</td>
+      </tr>
+
+      {% endfor %}
+    </tbody>
+  </table>
+  </div>
+  <br/>
+  <br/>
+    {% endif %}
+  {% endif %}
+{% endblock %}
+
+
+-
