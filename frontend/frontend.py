@@ -164,21 +164,55 @@ class DataAdd(Resource):
 			return resp
 
 class Data(Resource):
-	"""Consultation, modification et suppression de données"""
+	"""Consultation et suppression de données"""
 
 	@login_required
 	def get(self, geonameid):
 		"""Affichage"""
 
-		api_response = requests.get(backend_api + "/data/" + geonameid, headers = make_headers(), verify = False)
+		api_response = requests.get(backend_api + "/data/"+geonameid, headers=make_headers(), verify=False)
 
 		if api_response.status_code == 401 :
 			session.clear()
-			reponse = redirect(url_for('.login', error="invalid_token", next="/data/" + geonameid))
+			reponse = redirect(url_for('.login', error="invalid_token", next="/data/"+geonameid))
 			return reponse
 
 		result = api_response.json()['data']
-		data_rend = render_template("data.html", search = True, result = result)
+		if 'modif' in dict(request.args):
+			data_rend = render_template("data.html", modif=True, result = result)
+		else:
+			data_rend = render_template("data.html", result = result)
+		resp = Response(data_rend, status=200, content_type="text/html")
+		return resp
+
+	@login_required
+	def post(self, geonameid):
+		"""Modifie les données"""
+
+		info_modif = dict(request.form)
+		info_modif= {k: v for k, v in info_modif.items() if v != ''}
+		api_response = requests.post(backend_api + '/data/' + geonameid, headers = make_headers(), json = info_modif, verify = False)
+
+		if api_response.status_code == 401 :
+			session.clear()
+			reponse = redirect(url_for('.login', error="invalid_token", next="/data/"+geonameid))
+			return reponse
+
+		resp = redirect(url_for('.data', geonameid=geonameid, modif=True))
+		return resp
+
+	@login_required
+	def delete(self, geonameid):
+		"""Supprime un lieu"""
+
+		api_response = requests.delete(backend_api + "/data/"+geonameid, headers=make_headers(), verify=False)
+
+		if api_response.status_code == 401 :
+			session.clear()
+			reponse = redirect(url_for('.login', error="invalid_token", next="/data/"+geonameid))
+			return reponse
+
+		data_rend = render_template("data.html")
 		resp = Response(data_rend, status=200, content_type="text/html")
 		return resp
 
