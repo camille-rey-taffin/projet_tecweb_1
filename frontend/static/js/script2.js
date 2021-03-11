@@ -2,12 +2,12 @@ $(document).ready(function(){
   $("#advancedSearch").hide() ;
 
   $("#boutonRecherche").click(function(){
-    if ($("#boutonRecherche").attr("state") == "off"){
+    if ($("#boutonRecherche").html() == "Recherche avancée"){
+        $("#boutonRecherche").html("Recherche simple");
         $("#advancedSearch").show() ;
-        $("#boutonRecherche").attr("state","on");
     }
     else {
-      $("#boutonRecherche").attr("state","off");
+      $("#boutonRecherche").html("Recherche avancée");
       $("#advancedSearch").hide() ;
     }
 });

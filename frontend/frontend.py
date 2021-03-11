@@ -12,6 +12,23 @@ api = Api(app)
 # URL de notre application backend
 backend_api = "https://projet-tecweb-backend.herokuapp.com"
 
+
+def token_required_front(f):
+	"""Hg"""
+	@wraps(f)
+	def decorator(*args, **kwargs):
+		if 'token' not in session:
+			reponse = redirect(url_for('.login', error="login_required", next="/data/add"))
+			return reponse
+
+		else :
+			current_user = decoded_token
+			return f(current_user, *args, **kwargs)
+	return decorator
+
+def make_headers():
+	return { 'Authorization' : "Bearer " + session['token'] }
+
 class Index(Resource):
 	"""Index"""
 
@@ -48,9 +65,11 @@ class Login(Resource):
 	def post(self):
 		"""Description"""
 		info_login = dict(request.form)
-		user_id = {"name" : info_login["name"], "firstname" : info_login["firstname"]}
 		api_response = requests.post(backend_api + '/login', json = info_login, verify = False).json()
 
+		error = False
+		if "error" in request.args:
+			error = request.args["error"]
 
 		# Si les identifiants sont corrects, on enregistre le token dans un cookie
 		# puis on redirige vers les données :
@@ -60,7 +79,10 @@ class Login(Resource):
 			session['user_id'] = api_response['User']["id"]
 			session['user_name'] = api_response['User']["nom"]
 			session['user_firstname'] = api_response['User']["prenom"]
-			resp = redirect('/login')
+			if error :
+				resp = redirect(request.args["next"])
+			else :
+				resp = redirect('/login')
 			return resp
 
 		# Si les identifiants sont incorrects :
@@ -80,8 +102,9 @@ class Logout(Resource):
 			session.clear()
 			reponse = redirect('/login')
 			return reponse
+
 		else :
-			reponse = "erreur, vous n'étiez pas connecté"
+			reponse = "ERREUR - logout impossible (pas authentifié)"
 			resp = Response(reponse, status=400, content_type="text/html")
 			return resp
 
@@ -90,12 +113,14 @@ class DataSearch(Resource):
 
 	def get(self):
 		"""Description """
+
 		filtres = dict(request.args)
 		filtres = {k: v for k, v in filtres.items() if v != ''}
-		print(filtres)
+
 		if 'token' not in session:
-			reponse = redirect(url_for('.login', error="login_required"))
+			reponse = redirect(url_for('.login', error="login_required", next="/data/search"))
 			return reponse
+
 		else :
 			headers = { 'Authorization' : "Bearer " + session['token'] }
 
@@ -103,7 +128,7 @@ class DataSearch(Resource):
 
 			if api_response.status_code == 401 :
 				session.clear()
-				reponse = redirect(url_for('.login', error="invalid_token"))
+				reponse = redirect(url_for('.login', error="invalid_token", next="/data/search"))
 				return reponse
 
 			if not filtres :
@@ -117,10 +142,57 @@ class DataSearch(Resource):
 				resp = Response(datasearch_rend, status=200, content_type="text/html")
 				return resp
 
+class DataAdd(Resource):
+	"""Recherche de données"""
+
+	def get(self):
+		"""Description """
+
+		if 'token' not in session:
+			reponse = redirect(url_for('.login', error="login_required", next="/data/add"))
+			return reponse
+
+		else :
+
+			dataAdd_rend = render_template("dataAdd.html")
+			resp = Response(dataAdd_rend, status=200, content_type="text/html")
+			return resp
+
+	def post(self):
+		"""Description """
+
+		if 'token' not in session:
+			reponse = redirect(url_for('.login', error="login_required", next="/data/add"))
+			return reponse
+
+		else :
+
+			info_ajout = dict(request.form)
+			api_response = requests.put(backend_api + '/data/' + info_ajout['geonameid'], headers = make_headers(), json = info_ajout, verify = False)
+
+			if api_response.status_code == 401 :
+				session.clear()
+				reponse = redirect(url_for('.login', error="invalid_token", next="/data/add"))
+				return reponse
+
+			if api_response.status_code == 409 :
+				#reponse = redirect(url_for('.login', error="invalid_token", next="/data/search"))
+				dataAdd_rend = render_template("dataAdd.html", geonameid_exists = info_ajout['geonameid'])
+				resp = Response(dataAdd_rend, status = 409, content_type="text/html")
+				return resp
+
+			if api_response.status_code == 200 :
+
+				dataAdd_rend = render_template("dataAdd.html", geonameid_created = info_ajout['geonameid'])
+				resp = Response(dataAdd_rend, status=200, content_type="text/html")
+				return resp
+
+
 api.add_resource(Index, "/", "/index")
 api.add_resource(Login, "/login")
 api.add_resource(Logout, "/logout")
 api.add_resource(DataSearch, "/data/search")
+api.add_resource(DataAdd, "/data/add")
 
 
 if __name__ == '__main__':

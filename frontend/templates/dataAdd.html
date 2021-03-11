@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+{% block masthead %}
+<header class="masthead bg-info text-white text-center" style="max-height: 400px;padding:120px">
+    <div class="container d-flex align-items-center flex-column">
+        <!-- Masthead Avatar Image-->
+        <img class="masthead-avatar mb-5" style="width:100px; height:100px;" src="/static/img/globe.png" alt="" />
+        <!-- Masthead Heading-->
+        <h1 class="masthead-heading text-uppercase mb-0">Plateforme Digidata</h1>
+        <!-- Icon Divider-->
+        <div class="divider-custom divider-light">
+            <div class="divider-custom-line"></div>
+            <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+            <div class="divider-custom-line"></div>
+        </div>
+    </div>
+</header>
+{% endblock %}
+{% block content %}
+  <!-- Search Section-->
+  <section class="page-section" id="Login">
+      <div class="container">
+          <!-- Add Section Heading-->
+          <h2 class=" text-center text-uppercase text-secondary ">Ajout de données</h2>
+          <br/>
+          {% if geonameid_exists %}
+          <div class="alert alert-danger" role="alert">
+            Un élément de geonameid {{ geonameid_exists }} existe déjà
+          </div>
+            <br/>
+          {% endif %}
+          {% if geonameid_created %}
+            <div class="alert alert-success" role="alert">
+              L'élément <a href="/data/{{ created }}">{{ geonameid_created }}<a> a bien été créé.
+            </div>
+            <br/>
+          {% endif %}
+          <!-- Add Form-->
+          <div class="row">
+              <div class="col-lg-8 mx-auto">
+                  <form id="addForm" name="addForm" method="post" onsubmit="return confirm('Confirmer la création de données?');">
+                      <div class="form-row">
+                          <div class="form-group col-md-4">
+                              <label for="geonameid">geonameid</label>
+                              <input class="form-control" id="geonameid" name="geonameid" type="text" placeholder="1234567" required />
+                              <small id="emailHelp" class="form-text text-primary">Obligatoire</small>
+                          </div>
+                          <div class="form-group col-md-4">
+                              <label for="name">nom</label>
+                              <input class="form-control" id="name" name="name" type="text" placeholder="La Réunion" required />
+                              <small id="emailHelp" class="form-text text-primary">Obligatoire</small>
+                          </div>
+                          <div class="form-group col-md-4">
+                              <label for="asciiname">asciiname</label>
+                              <input class="form-control" id="asciiname" name="asciiname" type="text" placeholder="" />
+
+                          </div>
+                      </div>
+                      <div class="form-row">
+                          <div class="form-group col-md-4">
+                              <label for="alternatenames">Autres noms</label>
+                              <input class="form-control" id="alternatenames" name="alternatenames" type="text" placeholder=""/>
+                          </div>
+                          <div class="form-group col-md-4">
+                              <label for="latitude">latitude</label>
+                              <input class="form-control" id="latitude" name="latitude" type="text" placeholder="" />
+                          </div>
+                          <div class="form-group col-md-4">
+                              <label for="longitude">longitude</label>
+                              <input class="form-control" id="longitude" name="longitude" type="text" placeholder="" />
+                          </div>
+                      </div>
+                      <div class="form-row">
+                          <div class="form-group col-md-4">
+                              <label for="feature_class">classe feature</label>
+                              <input class="form-control" id="feature_class" name="feature_class" type="text" placeholder="" />
+                          </div>
+                          <div class="form-group col-md-4">
+                              <label for="feature_code">code feature</label>
+                              <input class="form-control" id="feature_code" name="feature_code" type="text" placeholder="" />
+                          </div>
+                          <div class="form-group col-md-4">
+                              <label for="country_code">code pays</label>
+                              <input class="form-control" id="country_code" name="country_code" type="text" placeholder="" />
+                          </div>
+                      </div>
+                      <div class="form-row">
+                          <div class="form-group col-md-4">
+                              <label for="cc2">cc2</label>
+                              <input class="form-control" id="cc2" name="cc2" type="text" placeholder="" />
+                          </div>
+                          <div class="form-group col-md-4">
+                              <label for="admin1_code">code admin1</label>
+                              <input class="form-control" id="admin1_code" name="admin1_code" type="text" placeholder="" />
+                          </div>
+                          <div class="form-group col-md-4">
+                              <label for="admin2_code">code admin2</label>
+                              <input class="form-control" id="admin2_code" name="admin2_code" type="text" placeholder="" />
+                          </div>
+                      </div>
+                      <div class="form-row">
+                          <div class="form-group col-md-4">
+                              <label for="admin3_code">code admin3</label>
+                              <input class="form-control" id="admin3_code" name="admin3_code" type="text" placeholder="" />
+                          </div>
+                          <div class="form-group col-md-4">
+                              <label for="admin4_code">code admin4</label>
+                              <input class="form-control" id="admin4_code" name="admin4_code" type="text" placeholder="" />
+                          </div>
+                          <div class="form-group col-md-4">
+                              <label for="population">population</label>
+                              <input class="form-control" id="population" name="population" type="text" placeholder="" />
+                          </div>
+                      </div>
+                      <div class="form-row">
+                          <div class="form-group col-md-4">
+                              <label for="elevation">elevation</label>
+                              <input class="form-control" id="elevation" name="elevation" type="text" placeholder="" />
+                          </div>
+                          <div class="form-group col-md-4">
+                              <label for="dem">dem</label>
+                              <input class="form-control" id="dem" name="dem" type="text" placeholder="" />
+                          </div>
+                          <div class="form-group col-md-4">
+                              <label for="timezone">Fuseau horaire</label>
+                              <input class="form-control" id="timezone" name="timezone" type="text" placeholder="" />
+                          </div>
+                      </div>
+                      <div class="form-row">
+                          <div class="form-group col-md-4">
+                              <label for="modification_date">date de modification</label>
+                              <input class="form-control" id="modification_date" name="modification_date" type="text" placeholder="" />
+                          </div>
+                      </div>
+                      <br />
+
+                      <div id="success"></div>
+                      <div class="form-group"><button class="btn btn-primary btn-xl" id="loginButton" type="submit">Ajouter</button></div>
+
+                  </form>
+              </div>
+          </div>
+      </div>
+  </section>
+  <br/>
+  <br/>
+{% endblock %}
+
+
+-
