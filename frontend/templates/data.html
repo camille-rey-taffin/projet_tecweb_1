@@ -3,7 +3,7 @@
 <header class="masthead bg-info text-white text-center" style="max-height: 400px;padding:120px">
     <div class="container d-flex align-items-center flex-column">
         <!-- Masthead Avatar Image-->
-        <img class="masthead-avatar mb-5" style="width:100px; height:100px;" src="static/img/globe.png" alt="" />
+        <img class="masthead-avatar mb-5" style="width:100px; height:100px;" src="/static/img/globe.png" alt="" />
         <!-- Masthead Heading-->
         <h1 class="masthead-heading text-uppercase mb-0">Plateforme Digidata</h1>
         <!-- Icon Divider-->
@@ -12,41 +12,96 @@
             <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
             <div class="divider-custom-line"></div>
         </div>
-        <!-- Masthead Subheading-->
-        <p class="masthead-subheading font-weight-light mb-0">Du digital et des data, c'est Digidata !</p>
     </div>
 </header>
 {% endblock %}
 {% block content %}
-  <!-- Login Section-->
-  <section class="page-section" id="Login">
-      <div class="container">
-          <!-- Contact Section Heading-->
-          <h2 class=" text-center text-uppercase text-secondary ">Login</h2>
-          <!-- Login Form-->
-          <div class="row">
-              <div class="col-lg-8 mx-auto">
-                  <form id="loginForm" name="sentMessage" novalidate="novalidate">
-                      <div class="control-group">
-                          <div class="form-group floating-label-form-group controls mb-0 pb-2">
-                              <label>Nom</label>
-                              <input class="form-control" id="name" type="text" placeholder="Nom" required="required" data-validation-required-message="Entrez votre nom" />
-                              <p class="help-block text-danger"></p>
-                          </div>
-                      </div>
-                      <div class="control-group">
-                          <div class="form-group floating-label-form-group controls mb-0 pb-2">
-                              <label>Prénom</label>
-                              <input class="form-control" id="firstname" type="text" placeholder="Prénom" required="required" data-validation-required-message="Entrez votre prénom" />
-                              <p class="help-block text-danger"></p>
-                          </div>
-                      </div>
-                      <br />
-                      <div id="success"></div>
-                      <div class="form-group"><button class="btn btn-primary btn-xl" id="loginButton" type="submit">Se connecter</button></div>
-                  </form>
-              </div>
-          </div>
-      </div>
-  </section>
+<section class="page-section">
+  <div class="container">
+  <table class="table bg-light" style="width:70%;margin:auto">
+    <!-- Add Section Heading-->
+    <h2 class=" text-center text-uppercase text-secondary">{{result['geonameid']}}</h2>
+    <br/>
+      <tr>
+        <th>geonameid</th>
+        <td>{{result['geonameid']}}</td>
+	  </tr>
+      <tr>
+        <th>nom</th>
+		<td>{{result['name']}}</td>
+	  </tr>
+      <tr>
+        <th>asciiname</th>
+		<td>{{result['asciiname']}}</td>
+	  </tr>
+      <tr>
+        <th>alternatenames</th>
+		<td>{{result['alternatenames']}}</td>
+	  </tr>
+      <tr>
+		<th>latitude</th>
+		<td>{{result['latitude']}}</td>
+	  </tr>
+      <tr>
+		<th>longitude</th>
+		<td>{{result['longitude']}}</td>
+	  </tr>
+      <tr>
+		<th>feature_class</th>
+		<td>{{result['feature_class']}}</td>
+	  </tr>
+      <tr>
+		<th>feature_code</th>
+		<td>{{result['feature_code']}}</td>
+	  </tr>
+      <tr>
+		<th>country_code</th>
+		<td>{{result['country_code']}}</td>
+	  </tr>
+      <tr>
+        <th>cc2</th>
+		<td>{{result['cc2']}}</td>
+	  </tr>
+      <tr>
+		<th>admin1_code</th>
+		<td>{{result['admin1_code']}}</td>
+	  </tr>
+      <tr>
+		<th>admin2_code</th>
+		<td>{{result['admin2_code']}}</td>
+	  </tr>
+      <tr>
+		<th>admin3_code</th>
+		<td>{{result['admin3_code']}}</td>
+	  </tr>
+      <tr>
+		<th>admin4_code</th>
+		<td>{{result['admin4_code']}}</td>
+	  </tr>
+      <tr>
+		<th>population</th>
+		<td>{{result['population']}}</td>
+	  </tr>
+      <tr>
+		<th>elevation</th>
+		<td>{{result['elevation']}}</td>
+	  </tr>
+      <tr>
+		<th>dem</th>
+		<td>{{result['dem']}}</td>
+	  </tr>
+      <tr>
+		<th>timezone</th>
+		<td>{{result['timezone']}}</td>
+	  </tr>
+      <tr>
+		<th>modification_date</th>
+		<td>{{result['modification_date']}}</td>
+      </tr>
+
+  </table>
+  </div>
+</section>
+  <br/>
+  <br/>
 {% endblock %}
