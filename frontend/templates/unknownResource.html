@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 {% block title %}
-Digidata
+Erreur 404
 {% endblock %}
 {% block masthead %}
-<header class="masthead bg-info text-white text-center" >
+<header class="masthead bg-info text-white text-center" style="max-height: 400px;padding:120px">
     <div class="container d-flex align-items-center flex-column">
         <!-- Masthead Avatar Image-->
-        <img class="masthead-avatar mb-5" src="static/img/globe.png" alt="" />
+        <img class="masthead-avatar mb-5" style="width:100px; height:100px;" src="/static/img/globe.png" alt="" />
         <!-- Masthead Heading-->
         <h1 class="masthead-heading text-uppercase mb-0">Plateforme Digidata</h1>
         <!-- Icon Divider-->
@@ -15,10 +15,15 @@ Digidata
             <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
             <div class="divider-custom-line"></div>
         </div>
-        <!-- Masthead Subheading-->
-        <p class="masthead-subheading font-weight-light mb-0">Du digital et des data, c'est Digidata !</p>
     </div>
 </header>
 {% endblock %}
 {% block content %}
+  <!-- Login Section-->
+  <section class="page-section" id="Login">
+      <div class="container" style="text-align:center">
+          <h2>OOPS ! Ce lieu n'existe pas ! </h2>
+          <h4>Vous seriez-vous trompé de geonameid dans l'URL ...?</h4>
+      </div>
+  </section>
 {% endblock %}

@@ -174,8 +174,13 @@ class Data(Resource):
 
 		if api_response.status_code == 401 :
 			session.clear()
-			reponse = redirect(url_for('.login', error="invalid_token", next="/data/"+geonameid))
-			return reponse
+			resp = redirect(url_for('.login', error="invalid_token", next="/data/"+geonameid))
+			return resp
+
+		if api_response.status_code == 404 :
+			dataAdd_rend = render_template("unknownResource.html")
+			resp = Response(dataAdd_rend, status = 404, content_type="text/html")
+			return resp
 
 		result = api_response.json()['data']
 		if 'modif' in dict(request.args):
@@ -203,18 +208,11 @@ class Data(Resource):
 
 	@login_required
 	def delete(self, geonameid):
-		"""Supprime un lieu"""
+		"""Supprime un lieu (requête delete lancée grâce à javascript)"""
 
 		api_response = requests.delete(backend_api + "/data/"+geonameid, headers=make_headers(), verify=False)
 
-		if api_response.status_code == 401 :
-			session.clear()
-			reponse = redirect(url_for('.login', error="invalid_token", next="/data/"+geonameid))
-			return reponse
-
-		data_rend = render_template("data.html")
-		resp = Response(data_rend, status=200, content_type="text/html")
-		return resp
+		return api_response.status_code
 
 
 api.add_resource(Index, "/", "/index")

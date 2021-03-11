@@ -1,4 +1,7 @@
 {% extends "base.html" %}
+{% block title %}
+{{result['geonameid']}}
+{% endblock %}
 {% block masthead %}
 <header class="masthead bg-info text-white text-center" style="max-height: 400px;padding:120px">
     <div class="container d-flex align-items-center flex-column">
@@ -16,7 +19,7 @@
 </header>
 {% endblock %}
 {% block content %}
-	<section class="page-section">
+	<section class="page-section" id="mainSection">
 	  <div class="container">
 
 	  <table class="table" style="width:70%;margin:auto">
@@ -26,7 +29,7 @@
 
 	  {% if modif == True %}
 		<div class="alert alert-success" role="alert">
-		  L'élément a bien été modifié.
+		  L'élément <b>{{result['geonameid']}}</b> a bien été modifié.
 		</div>
 		<br/>
 	  {% endif %}
@@ -113,8 +116,8 @@
   </table>
 
 	<div align="right">
-  	<a href="#Modification" class="js-scroll-trigger"><button class="btn bg-info text-white" id="boutonModify" type="submit" state="off">Modifier</button></a>
-	   <button class="btn btn-warning text-white" id="boutonDelete" type="submit">Supprimer</button>
+  	<a href="#Modification" class="js-scroll-trigger"><button class="btn bg-info text-white" id="boutonModify" state="off">Modifier</button></a>
+	   <button class="btn btn-warning text-white" id="boutonDelete" onclick="deleteElement()">Supprimer</button>
 	</div>
   </div>
   <br/>

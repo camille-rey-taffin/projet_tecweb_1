@@ -1,4 +1,7 @@
 {% extends "base.html" %}
+{% block title %}
+Ajout données
+{% endblock %}
 {% block masthead %}
 <header class="masthead bg-info text-white text-center" style="max-height: 400px;padding:120px">
     <div class="container d-flex align-items-center flex-column">
@@ -123,12 +126,6 @@
                           <div class="form-group col-md-4">
                               <label for="timezone">Fuseau horaire</label>
                               <input class="form-control" id="timezone" name="timezone" type="text" placeholder="" />
-                          </div>
-                      </div>
-                      <div class="form-row">
-                          <div class="form-group col-md-4">
-                              <label for="modification_date">date de modification</label>
-                              <input class="form-control" id="modification_date" name="modification_date" type="text" placeholder="" />
                           </div>
                       </div>
                       <br />
