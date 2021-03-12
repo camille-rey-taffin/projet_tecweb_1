@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}
+Erreur
+{% endblock %}
+{% block masthead %}
+<header class="masthead bg-info text-white text-center" style="max-height: 400px;padding:120px">
+    <div class="container d-flex align-items-center flex-column">
+        <!-- Masthead Avatar Image-->
+        <img class="masthead-avatar mb-5" style="width:100px; height:100px;" src="/static/img/globe.png" alt="" />
+        <!-- Masthead Heading-->
+        <h1 class="masthead-heading text-uppercase mb-0">Plateforme Digidata</h1>
+        <!-- Icon Divider-->
+        <div class="divider-custom divider-light">
+            <div class="divider-custom-line"></div>
+            <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+            <div class="divider-custom-line"></div>
+        </div>
+    </div>
+</header>
+{% endblock %}
+{% block content %}
+  <!-- Error Section-->
+  <section class="page-section" id="Erreur">
+    {% if error_type == 404 %}
+      {% if error == 'wrong_geonameid' %}
+        <div class="container" style="text-align:center">
+            <h2>OOPS ! Ce lieu n'existe pas ! </h2>
+            <h4>Vous seriez-vous trompé de geonameid dans l'URL ...?</h4>
+        </div>
+      {% else %}
+        <div class="container" style="text-align:center">
+            <h2>OOPS ! Erreur 404 ! </h2>
+            <h4>Ressource non trouvée</h4>
+        </div>
+      {% endif %}
+    {% elif error_type == 400 %}
+      <div class="container" style="text-align:center">
+          <h2>OOPS ! Erreur 400 ! </h2>
+          <h4>Mauvaise requête</h4>
+      </div>
+    {% endif %}
+    <p class='lead' style='text-align:center'>Retourner à <a href='/index'>la page d'accueil<a/></p>
+  </section>
+{% endblock %}

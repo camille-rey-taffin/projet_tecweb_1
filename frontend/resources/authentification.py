@@ -3,7 +3,7 @@ from flask_restful import Resource
 import requests
 
 from ..config import BACKEND_URL as backend_api
-from ..utils import tokens
+from ..utils import *
 
 class Login(Resource):
 	"""Login"""
@@ -22,7 +22,10 @@ class Login(Resource):
 			resp = Response(login_rend, status=200, content_type="text/html")
 
 		else :
-			login_rend = render_template("login.html", login = False)
+			if "logout" in request.args :
+				login_rend = render_template("login.html", login = False, logout = True)
+			else :
+				login_rend = render_template("login.html", login = False)
 			resp = Response(login_rend, status=200, content_type="text/html")
 
 		return resp
@@ -62,10 +65,11 @@ class Logout(Resource):
 
 		if 'token' in session:
 			session.clear()
-			reponse = redirect('/login')
+			#api_response = requests.get(backend_api + '/logout', headers = make_headers(), verify = False)
+			reponse = redirect(url_for('.login', logout = True))
 			return reponse
 
 		else :
-			reponse = "ERREUR - logout impossible (pas authentifié)"
-			resp = Response(reponse, status=400, content_type="text/html")
+			logout_rend = render_template("error.html", error_type = 400)
+			resp = Response(logout_rend, status=400, content_type="text/html")
 			return resp

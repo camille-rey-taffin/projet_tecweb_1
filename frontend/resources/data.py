@@ -82,7 +82,7 @@ class Data(Resource):
 			return resp
 
 		if api_response.status_code == 404 :
-			dataAdd_rend = render_template("unknownResource.html")
+			dataAdd_rend = render_template("error.html", error_type = 404, error = 'wrong_geonameid')
 			resp = Response(dataAdd_rend, status = 404, content_type="text/html")
 			return resp
 

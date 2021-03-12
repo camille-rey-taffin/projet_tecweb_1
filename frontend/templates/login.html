@@ -39,6 +39,12 @@ Login
             <p class="lead" style="text-align: center"> Votre session est expirée ou invalide, veuillez vous ré-authentifier :</p>
               {% endif %}
           {% endif %}
+          {% if logout == True %}
+            <div class="alert alert-success" role="alert">
+              Vous avez bien été déconnecté.
+            </div>
+            <br/>
+          {% endif %}
           <div class="row">
               <div class="col-lg-8 mx-auto">
                   <form id="loginForm" name="loginForm" method="post">
