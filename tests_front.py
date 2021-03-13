@@ -1,17 +1,19 @@
 # coding: utf-8
 
 import unittest
-
-from frontend.frontend import app
+import multiprocessing
+from frontend import app
+from backend import app as back_app
+import time
 
 
 class FrontTests(unittest.TestCase):
 
     ############################
-    #### setup and teardown ####
+    #### setup et teardown  ####
     ############################
 
-    # executed prior to each test
+    # exécuté avant chaque test
     def setUp(self):
         app.config['TESTING'] = True
         app.config['WTF_CSRF_ENABLED'] = False
@@ -19,13 +21,13 @@ class FrontTests(unittest.TestCase):
         self.app = app.test_client()
 
 
-    # executed after each test
+    # executé après chaque test
     def tearDown(self):
         pass
 
 
     ########################
-    #### helper methods ####
+    #### méthodes helper ####
     ########################
 
     def login(self, name, firstname):
@@ -193,4 +195,13 @@ class FrontTests(unittest.TestCase):
         self.assertEqual(resp_deleted_data.status_code, 404)
 
 if __name__ == "__main__":
-    unittest.main()
+    #lancer le backend en fond
+    p = multiprocessing.Process(target=back_app.run)
+    p.start()
+    #faire les tests
+    time.sleep(1)
+    unittest.main(exit = False)
+    time.sleep(1)
+    #arrêter le backend en fond
+    p.terminate()
+    p.join()
