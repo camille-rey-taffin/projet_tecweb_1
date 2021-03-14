@@ -1,0 +1,43 @@
+**********************
+Suppression de données
+**********************
+
+**ressource : /data/<geonameid>**
+
+delete
+======
+
+| Cette requête n’est pas possible si l’utilisateur n’est pas connecté (token dans la session).
+| Envoie une requête de suppression des données à l’api backend. Cette requête est formulée via une requête AJAX en javascript, si on clique sur le bouton supprimer (après demande de confirmation). Elle renvoie uniquement un code (succès ou fail), et le javascript gère l’affichage du message de confirmation de la suppression.
+
+|
+
+*Paramètres(URL) :*
+
+=========================== =========== =============================================
+Champ                       Type        Description
+=========================== =========== =============================================
+geonameid **(obligatoire)** string      geonameid (identifiant) du lieu à consulter
+=========================== =========== =============================================
+
+|
+
+*Réponses :*
+
+================= ========== ======================================================================================================================
+Code              Type       Description
+================= ========== ======================================================================================================================
+200               html/text  Affichage d’un message de confirmation de suppression des données
+401               html/text  Redirection vers la page de login avec un message d’erreur si l’utilisateur n’est pas connecté
+401               html/text  Redirection vers la page de login avec un message d'erreur si le token d’authentification est expiré / invalide
+404               html/text  Affiche un message d’erreur 404 de lieu non trouvé.
+================= ========== ======================================================================================================================
+
+|
+| Exemple de requête:
+
+.. figure:: img/supp_ex.PNG
+   :width: 400px
+   :height: 300px
+
+   suppression des données 7777777 (créées pour le test)

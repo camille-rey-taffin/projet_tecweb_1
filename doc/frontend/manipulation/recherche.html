@@ -1,0 +1,267 @@
+
+
+<!doctype html>
+
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Recherche de données &#8212; Documentation Techniques web 1.0.0</title>
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bizstyle.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/translations.js"></script>
+    <script src="../_static/bizstyle.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Recherche" href="../search.html" />
+    <link rel="next" title="Consultation de données" href="consultation.html" />
+    <link rel="prev" title="Logout" href="../authentification/logout.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <!--[if lt IE 9]>
+    <script src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Index général"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="consultation.html" title="Consultation de données"
+             accesskey="N">suivant</a> |</li>
+        <li class="right" >
+          <a href="../authentification/logout.html" title="Logout"
+             accesskey="P">précédent</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">Documentation Techniques web 1.0.0</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Recherche de données</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="recherche-de-donnees">
+<h1>Recherche de données<a class="headerlink" href="#recherche-de-donnees" title="Lien permanent vers ce titre">¶</a></h1>
+<div class="souligne"<p><strong>ressource : /data/search</strong></p></div>
+<div class="section" id="get">
+<h2>get<a class="headerlink" href="#get" title="Lien permanent vers ce titre">¶</a></h2>
+<div class="line-block">
+<div class="line">Cette page n’est pas accessible si l’utilisateur n’est pas connecté (token dans la session).</div>
+<div class="line">Affiche la page de recherche de données. Contient un formulaire de recherche et un bouton « recherche avancée » permet d’afficher davantage de critères de recherche. La soumission du formulaire renvoie une requête get sur la même page, avec les champs du formulaires passés en paramètres.</div>
+<div class="line">Si un formulaire a été soumis, les résultats de la recherche sont affichés sous forme d’un tableau en dessous du formulaire.</div>
+</div>
+<div class="figure align-default" id="id1">
+<a class="reference internal image-reference" href="../_images/recherche.PNG"><img alt="../_images/recherche.PNG" src="../_images/recherche.PNG" style="width: 400px; height: 300px;" /></a>
+<p class="caption"><span class="caption-text">Page de recherche</span><a class="headerlink" href="#id1" title="Lien permanent vers cette image">¶</a></p>
+</div>
+<dl>
+<dt><em>Paramètres :</em></dt><dd><div class="line-block">
+<div class="line">!! Tous les champs sont optionnels</div>
+</div>
+</dd>
+</dl>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 4%" />
+<col style="width: 86%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Champ</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>name</p></td>
+<td><p>String</p></td>
+<td><p>Nom du point géographique</p></td>
+</tr>
+<tr class="row-odd"><td><p>geonameid</p></td>
+<td><p>String</p></td>
+<td><p>ID entier de l’enregistrement dans la base de données des noms géographiques</p></td>
+</tr>
+<tr class="row-even"><td><p>asciiname</p></td>
+<td><p>String</p></td>
+<td><p>nom du point géographique en caractères ascii simples</p></td>
+</tr>
+<tr class="row-odd"><td><p>alternatenames</p></td>
+<td><p>String</p></td>
+<td><p>noms alternatifs, séparés par des virgules, noms ascii automatiquement translittérés, attribut de commodité du tableau des noms alternatifs</p></td>
+</tr>
+<tr class="row-even"><td><p>latitude</p></td>
+<td><p>String</p></td>
+<td><p>latitude en degrés décimaux</p></td>
+</tr>
+<tr class="row-odd"><td><p>longitude</p></td>
+<td><p>String</p></td>
+<td><p>longitude in decimal degrees</p></td>
+</tr>
+<tr class="row-even"><td><p>feature_class</p></td>
+<td><p>String</p></td>
+<td><p>voir <a class="reference external" href="http://www.geonames.org/export/codes.html">http://www.geonames.org/export/codes.html</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>feature_code</p></td>
+<td><p>String</p></td>
+<td><p>voir <a class="reference external" href="http://www.geonames.org/export/codes.html">http://www.geonames.org/export/codes.html</a>.</p></td>
+</tr>
+<tr class="row-even"><td><p>country_code</p></td>
+<td><p>String</p></td>
+<td><p>Code pays ISO-3166 à 2 lettres, 2 caractères</p></td>
+</tr>
+<tr class="row-odd"><td><p>cc2</p></td>
+<td><p>String</p></td>
+<td><p>autres codes pays, séparés par des virgules, code pays ISO-3166 à 2 lettres</p></td>
+</tr>
+<tr class="row-even"><td><p>admin1_code</p></td>
+<td><p>String</p></td>
+<td><p>fipscode (susceptible d’être modifié en code iso), voir les exceptions ci-dessous, voir le fichier admin1Codes.txt pour les noms d’affichage de ce code</p></td>
+</tr>
+<tr class="row-odd"><td><p>admin2_code</p></td>
+<td><p>String</p></td>
+<td><p>code pour la deuxième division administrative, un comté aux États-Unis, voir le fichier admin2Codes.txt</p></td>
+</tr>
+<tr class="row-even"><td><p>admin3_code</p></td>
+<td><p>String</p></td>
+<td><p>code d’administration de troisième niveau</p></td>
+</tr>
+<tr class="row-odd"><td><p>admin4_code</p></td>
+<td><p>String</p></td>
+<td><p>code d’administration de quatrième niveau</p></td>
+</tr>
+<tr class="row-even"><td><p>population</p></td>
+<td><p>String</p></td>
+<td><p>bigint</p></td>
+</tr>
+<tr class="row-odd"><td><p>elevation</p></td>
+<td><p>String</p></td>
+<td><p>modèle numérique d’élévation, srtm3 ou gtopo30, élévation moyenne de 3””x3”” (environ 90mx90m) ou 30””x30””</p></td>
+</tr>
+<tr class="row-even"><td><p>dem</p></td>
+<td><p>String</p></td>
+<td><p>modèle numérique d’élévation, srtm3 ou gtopo30, élévation moyenne de 3””x3”” (environ 90mx90m) ou 30””x30””</p></td>
+</tr>
+<tr class="row-odd"><td><p>timezone</p></td>
+<td><p>String</p></td>
+<td><p>le fuseau horaire iana id (voir le fichier timeZone.txt)</p></td>
+</tr>
+<tr class="row-even"><td><p>modification_date</p></td>
+<td><p>String</p></td>
+<td><p>date de la dernière modification au format aaaa-MM-jj</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p><em>Réponses :</em></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 23%" />
+<col style="width: 66%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Code</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>200</p></td>
+<td><p>html/text</p></td>
+<td><p>Page de recherche, avec les résultats si formulaire soumis.</p></td>
+</tr>
+<tr class="row-odd"><td><p>401</p></td>
+<td><p>html/text</p></td>
+<td><p>Redirection vers la page de login avec un message d’erreur si l’utilisateur n’est pas connecté</p></td>
+</tr>
+<tr class="row-even"><td><p>401</p></td>
+<td><p>html/text</p></td>
+<td><p>Redirection vers la page de login avec un message d’erreur si le token d’authentification est expiré / invalide</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line">Exemple de recherche</div>
+</div>
+<div class="souligne"<p><strong>ressource : https://projet-tecweb-frontend.herokuapp.com/data/search?name=Paris</strong></p></div>
+<div class="figure align-default" id="id2">
+<a class="reference internal image-reference" href="../_images/recherche_resul.PNG"><img alt="../_images/recherche_resul.PNG" src="../_images/recherche_resul.PNG" style="width: 400px; height: 300px;" /></a>
+<p class="caption"><span class="caption-text">Resultat de recherche</span><a class="headerlink" href="#id2" title="Lien permanent vers cette image">¶</a></p>
+</div>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table des matières</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Recherche de données</a><ul>
+<li><a class="reference internal" href="#get">get</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Sujet précédent</h4>
+  <p class="topless"><a href="../authentification/logout.html"
+                        title="Chapitre précédent">Logout</a></p>
+  <h4>Sujet suivant</h4>
+  <p class="topless"><a href="consultation.html"
+                        title="Chapitre suivant">Consultation de données</a></p>
+  <div role="note" aria-label="source link">
+    <h3>Cette page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/manipulation/recherche.rst.txt"
+            rel="nofollow">Montrer le code source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Recherche rapide</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Index général"
+             >index</a></li>
+        <li class="right" >
+          <a href="consultation.html" title="Consultation de données"
+             >suivant</a> |</li>
+        <li class="right" >
+          <a href="../authentification/logout.html" title="Logout"
+             >précédent</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">Documentation Techniques web 1.0.0</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Recherche de données</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Camille Chinatsu Solveig.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.2.
+    </div>
+  </body>
+</html>

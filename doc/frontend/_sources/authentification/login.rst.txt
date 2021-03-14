@@ -1,0 +1,120 @@
+******
+Login
+******
+
+**ressource : /login**
+
+get
+===
+| Affiche la page permettant l’authentification via un formulaire si l’utilisateur n’est pas connecté (si pas de token dans la session). Affiche un message d’accueil sinon. Le bouton « connecter » déclenche une requête POST sur la même ressource.
+
+.. figure:: img/login_get.PNG
+   :width: 400px
+   :height: 300px
+
+   Login (utilisateur non connecté)
+
+
+.. figure:: img/login_get_succes.PNG
+   :width: 400px
+   :height: 300px
+
+   Login (utilisateur connecté)
+
+*Paramètres :*
+
+================== ======================================= ===================================================================================================
+Champ              Valeurs possibles                       Description
+================== ======================================= ===================================================================================================
+logout (optionnel) | Boolean :                             | Indique que l’utilisateur vient de se déconnecter
+                   | True / False                          | Déclenche l’affichage d’un message de confirmation de la déconnexion
+error (optionnel)  | string :                              | Indique l’erreur à l’origine de la redirection vers la page de login
+                   | invalid_token                         | Déclenche l’affichage d’un message d’explication correspondant à l’erreur au-dessus du formulaire
+                   | login_required                        |
+next (optionnel)   | string :                              | Indique la page vers laquelle rediriger après login (utilisée dans la méthode POST)
+                   | URL d’une ressource de l’application  |
+================== ======================================= ===================================================================================================
+
+|
+|
+
+*Exemple de requête :*
+
+**ressource : /login?error=login_required&next=%2Fdata%2Fsearch**
+
+| L’utilisateur vient d’être redirigé vers la page de login après avoir essayé d’accéder à la page /data/search sans être authentifié.
+|
+
+.. figure:: img/login_post.PNG
+   :width: 400px
+   :height: 300px
+
+*Réponses :*
+
+================= ======================================= ========================================================================
+Code              Type                                    Description
+================= ======================================= ========================================================================
+200               html/text                               Page html contenant le formulaire de login ou un message d’accueil
+401               html/text                               Page html contenant le formulaire de login précédé d’un message d’erreur
+================= ======================================= ========================================================================
+
+|
+|
+
+post
+====
+
+| Méthode déclenchée par la soumission du formulaire de login. Intéragit avec l’API pour authentifier l’utilisateur. Si l’authentification aboutit, token d’authentification, id d’utilisateur, nom et prénom d’utilisateurs sont ajoutés à la session. Sinon un message d’erreur est affiché.
+
+
+*Paramètres (formulaire):*
+
+========================== ======================================= ======================================================================================
+Champ                      Valeurs possibles                       Description
+========================== ======================================= ======================================================================================
+name (obligatoire)         string                                  Le nom de l’utilisateur à authentifier
+firstnamename(obligatoire) string                                  Le prénom de l’utilisateur à authentifier
+next - URL (optionnel)     | string :                              Indique la page vers laquelle rediriger après login. (utilisée dans la méthode POST)
+                           | URL d’une ressource de l’application
+========================== ======================================= ======================================================================================
+
+*Paramètres (URL) :*
+
+====================== ======================================= ======================================================================================
+Champ                      Valeurs possibles                       Description
+====================== ======================================= ======================================================================================
+next - URL (optionnel) | string :                              Indique la page vers laquelle rediriger après login.
+                       | URL d’une ressource de l’application
+====================== ======================================= ======================================================================================
+
+
+*Réponses :*
+
+================= ======================================= ===================================================================================================
+Code              Type                                    Description
+================= ======================================= ===================================================================================================
+200 (redirection) | html/text                             | Redirection vers la page de login si succès
+/ (redirection)   | html/text                             | Redirection vers la page à laquelle l’utilisateur tentait d’accéder si paramètre « next » spécifié
+401               | html/text                             | Page contenant le formulaire de login et un message d’erreur d’identifiants
+================= ======================================= ===================================================================================================
+
+|
+|
+
+*Exemple de requête post infructueuse :*
+
+**ressource : /login**
+
+
+.. figure:: img/login_post_faux.PNG
+   :width: 400px
+   :height: 300px
+
+   formulaire
+
+
+.. figure:: img/login_post_echec.PNG
+   :width: 400px
+   :height: 300px
+
+   soumission (envoi requête POST)

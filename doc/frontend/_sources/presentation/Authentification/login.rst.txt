@@ -1,0 +1,36 @@
+******
+Login
+******
+
+*Source : authentification.py*
+
+get
+===
+
+| Permet à un utilisateur de se connecter.
+
+**Error 4xx**
+
+======= ======================================================================
+Nom     Description   
+======= ======================================================================
+401     Utilisateur introuvable dans la BDD : le prénom ou le nom est erroné.
+======= ======================================================================
+
+post
+===
+| Permet à un utilisateur de s'authentifier en renvoyant un token d'authentification.
+
+**Error 4xx**
+
+======= ======================================================================
+Nom     Description   
+======= ======================================================================
+401     Utilisateur introuvable dans la BDD : le prénom ou le nom est erroné.
+======= ======================================================================
+
+**Success 200**
+
+| En cas de succée 
+
+.. image:: img/login_succes.PNG

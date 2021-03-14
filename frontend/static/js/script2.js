@@ -23,6 +23,10 @@ $(document).ready(function(){
   }
 });
 
+$('.dropdown-sub .dropdown-list-sub a').on('touchstart', function(e) {
+  e.preventDefault();
+  window.location.href = $(this).attr('href');
+})
 }) ;
 
 function deleteElement() {

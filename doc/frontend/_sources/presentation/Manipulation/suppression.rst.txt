@@ -1,0 +1,5 @@
+###########################
+Suppression de données
+###########################
+
+| Suppression de données ページを作ってみた　！

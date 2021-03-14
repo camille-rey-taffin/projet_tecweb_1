@@ -195,6 +195,7 @@ class FrontTests(unittest.TestCase):
         self.assertEqual(resp_deleted_data.status_code, 404)
 
 if __name__ == "__main__":
+    
     #lancer le backend en fond
     p = multiprocessing.Process(target = back_app.run)
     p.start()

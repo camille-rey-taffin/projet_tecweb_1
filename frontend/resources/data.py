@@ -20,9 +20,6 @@ class DataSearch(Resource):
 
 		# cas d'une session expirée ou invalide
 		if api_response.status_code == 401 :
-			#session.clear()
-			#reponse = redirect(url_for('.login', error = "invalid_token", next = "/data/search"))
-			#return reponse
 			return invalid_token_response()
 
 		# cas où aucune recherche n'a été effectuée
@@ -116,6 +113,12 @@ class Data(Resource):
 		if api_response.status_code == 401 :
 			return invalid_token_response()
 
+		# cas d'un geoname id non existant dans la BDD
+		if api_response.status_code == 404 :
+			dataAdd_rend = render_template("error.html", error_type = 404, error = 'wrong_geonameid')
+			resp = Response(dataAdd_rend, status = 404, content_type = "text/html")
+			return resp
+
 		resp = redirect(url_for('.data', geonameid=geonameid, modif=True))
 		return resp
 
@@ -125,5 +128,15 @@ class Data(Resource):
 		message de succès grâce à javascript, en cliquant sur bouton SUPPRIMER)"""
 
 		api_response = requests.delete(backend_api + "/data/"+geonameid, headers = make_headers(), verify = False)
+
+		# cas d'une session expirée ou invalide
+		if api_response.status_code == 401 :
+			return invalid_token_response()
+
+		# cas d'un geoname id non existant dans la BDD
+		if api_response.status_code == 404 :
+			dataAdd_rend = render_template("error.html", error_type = 404, error = 'wrong_geonameid')
+			resp = Response(dataAdd_rend, status = 404, content_type = "text/html")
+			return resp
 
 		return api_response.status_code

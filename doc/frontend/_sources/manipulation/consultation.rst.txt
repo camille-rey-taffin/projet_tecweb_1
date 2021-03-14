@@ -1,0 +1,41 @@
+************************
+Consultation de données
+************************
+
+**ressource : /data/<geonameid>**
+
+get
+===
+
+| Cette page n’est pas accessible si l’utilisateur n’est pas connecté (token dans la session).
+| Affiche les informations de l’élément de geonameid passé dans l’URL sous forme d’un tableau. Un bouton « modifier » affiche un formulaire de modification, qui envoie une requête POST sur la même page une fois soumis. Un bouton « supprimer » lance une requête DELETE sur la même page (via requête AJAX en Javascript), qui permet de supprimer la ressource.
+|
+
+.. figure:: img/consul_ex.PNG
+   :width: 400px
+   :height: 400px
+   
+   Page de consultation de données (geoname id 2968815)
+
+
+*Paramètres :*
+
+=========================== =========== ===========================================================================================================
+Champ                       Type        Description
+=========================== =========== ===========================================================================================================
+geonameid **(obligatoire)** string      geonameid (identifiant) du lieu à consulter
+modif (optionnel)           Boolean     Si True, affiche un message de confirmation de modification des données au dessus du tableau d’informations
+=========================== =========== ===========================================================================================================
+
+|
+
+*Réponses :*
+
+================= ========== ===============================================================================================================
+Code              Type       Description
+================= ========== ===============================================================================================================
+200               html/text  Page de consultation des données avec informations sous forme de tableau
+401               html/text  Redirection vers la page de login avec un message d’erreur si l’utilisateur n’est pas connecté
+401               html/text  Redirection vers la page de login avec un message d'erreur si le token d’authentification est expiré / invalide
+404               html/text  Affiche un message d’erreur 404 de lieu non trouvé.
+================= ========== ===============================================================================================================

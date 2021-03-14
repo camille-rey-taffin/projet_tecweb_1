@@ -1,0 +1,191 @@
+
+
+<!doctype html>
+
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Suppression de données &#8212; Documentation Techniques web 1.0.0</title>
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bizstyle.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/translations.js"></script>
+    <script src="../_static/bizstyle.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Recherche" href="../search.html" />
+    <link rel="next" title="Ajout de données" href="ajout.html" />
+    <link rel="prev" title="Modification de données" href="modification.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <!--[if lt IE 9]>
+    <script src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Index général"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="ajout.html" title="Ajout de données"
+             accesskey="N">suivant</a> |</li>
+        <li class="right" >
+          <a href="modification.html" title="Modification de données"
+             accesskey="P">précédent</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">Documentation Techniques web 1.0.0</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Suppression de données</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="suppression-de-donnees">
+<h1>Suppression de données<a class="headerlink" href="#suppression-de-donnees" title="Lien permanent vers ce titre">¶</a></h1>
+<div class="souligne"<p><strong>ressource : /data/&lt;geonameid&gt;</strong></p></div>
+<div class="section" id="delete">
+<h2>delete<a class="headerlink" href="#delete" title="Lien permanent vers ce titre">¶</a></h2>
+<div class="line-block">
+<div class="line">Cette requête n’est pas possible si l’utilisateur n’est pas connecté (token dans la session).</div>
+<div class="line">Envoie une requête de suppression des données à l’api backend. Cette requête est formulée via une requête AJAX en javascript, si on clique sur le bouton supprimer (après demande de confirmation). Elle renvoie uniquement un code (succès ou fail), et le javascript gère l’affichage du message de confirmation de la suppression.</div>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p><em>Paramètres(URL) :</em></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 13%" />
+<col style="width: 54%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Champ</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>geonameid <strong>(obligatoire)</strong></p></td>
+<td><p>string</p></td>
+<td><p>geonameid (identifiant) du lieu à consulter</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p><em>Réponses :</em></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 12%" />
+<col style="width: 7%" />
+<col style="width: 81%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Code</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>200</p></td>
+<td><p>html/text</p></td>
+<td><p>Affichage d’un message de confirmation de suppression des données</p></td>
+</tr>
+<tr class="row-odd"><td><p>401</p></td>
+<td><p>html/text</p></td>
+<td><p>Redirection vers la page de login avec un message d’erreur si l’utilisateur n’est pas connecté</p></td>
+</tr>
+<tr class="row-even"><td><p>401</p></td>
+<td><p>html/text</p></td>
+<td><p>Redirection vers la page de login avec un message d’erreur si le token d’authentification est expiré / invalide</p></td>
+</tr>
+<tr class="row-odd"><td><p>404</p></td>
+<td><p>html/text</p></td>
+<td><p>Affiche un message d’erreur 404 de lieu non trouvé.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line">Exemple de requête:</div>
+</div>
+<div class="figure align-default" id="id1">
+<a class="reference internal image-reference" href="../_images/supp_ex.PNG"><img alt="../_images/supp_ex.PNG" src="../_images/supp_ex.PNG" style="width: 400px; height: 300px;" /></a>
+<p class="caption"><span class="caption-text">suppression des données 7777777 (créées pour le test)</span><a class="headerlink" href="#id1" title="Lien permanent vers cette image">¶</a></p>
+</div>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table des matières</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Suppression de données</a><ul>
+<li><a class="reference internal" href="#delete">delete</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Sujet précédent</h4>
+  <p class="topless"><a href="modification.html"
+                        title="Chapitre précédent">Modification de données</a></p>
+  <h4>Sujet suivant</h4>
+  <p class="topless"><a href="ajout.html"
+                        title="Chapitre suivant">Ajout de données</a></p>
+  <div role="note" aria-label="source link">
+    <h3>Cette page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/manipulation/suppression.rst.txt"
+            rel="nofollow">Montrer le code source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Recherche rapide</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Index général"
+             >index</a></li>
+        <li class="right" >
+          <a href="ajout.html" title="Ajout de données"
+             >suivant</a> |</li>
+        <li class="right" >
+          <a href="modification.html" title="Modification de données"
+             >précédent</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">Documentation Techniques web 1.0.0</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Suppression de données</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Camille Chinatsu Solveig.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.2.
+    </div>
+  </body>
+</html>

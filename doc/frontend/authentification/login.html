@@ -1,0 +1,350 @@
+
+
+<!doctype html>
+
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login &#8212; Documentation Techniques web 1.0.0</title>
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bizstyle.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/translations.js"></script>
+    <script src="../_static/bizstyle.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Recherche" href="../search.html" />
+    <link rel="next" title="Logout" href="logout.html" />
+    <link rel="prev" title="Index" href="../accueil/accueil.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <!--[if lt IE 9]>
+    <script src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Index général"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="logout.html" title="Logout"
+             accesskey="N">suivant</a> |</li>
+        <li class="right" >
+          <a href="../accueil/accueil.html" title="Index"
+             accesskey="P">précédent</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">Documentation Techniques web 1.0.0</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Login</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="login">
+<h1>Login<a class="headerlink" href="#login" title="Lien permanent vers ce titre">¶</a></h1>
+<div class="souligne"><p><strong>ressource : /login</strong></p></div>
+<div class="section" id="get">
+<h2>get<a class="headerlink" href="#get" title="Lien permanent vers ce titre">¶</a></h2>
+<div class="line-block">
+<div class="line">Affiche la page permettant l’authentification via un formulaire si l’utilisateur n’est pas connecté (si pas de token dans la session). Affiche un message d’accueil sinon. Le bouton « connecter » déclenche une requête POST sur la même ressource.</div>
+</div>
+<div class="figure align-default" id="id1">
+<a class="reference internal image-reference" href="../_images/login_get.PNG"><img alt="../_images/login_get.PNG" src="../_images/login_get.PNG" style="width: 400px; height: 300px;" /></a>
+<p class="caption"><span class="caption-text">Login (utilisateur non connecté)</span><a class="headerlink" href="#id1" title="Lien permanent vers cette image">¶</a></p>
+</div>
+<div class="figure align-default" id="id2">
+<a class="reference internal image-reference" href="../_images/login_get_succes.PNG"><img alt="../_images/login_get_succes.PNG" src="../_images/login_get_succes.PNG" style="width: 400px; height: 300px;" /></a>
+<p class="caption"><span class="caption-text">Login (utilisateur connecté)</span><a class="headerlink" href="#id2" title="Lien permanent vers cette image">¶</a></p>
+</div>
+<p><em>Paramètres :</em></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 12%" />
+<col style="width: 25%" />
+<col style="width: 63%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Champ</p></th>
+<th class="head"><p>Valeurs possibles</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>logout (optionnel)</p></td>
+<td><div class="line-block">
+<div class="line">Boolean :</div>
+<div class="line">True / False</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">Indique que l’utilisateur vient de se déconnecter</div>
+<div class="line">Déclenche l’affichage d’un message de confirmation de la déconnexion</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p>error (optionnel)</p></td>
+<td><div class="line-block">
+<div class="line">string :</div>
+<div class="line">invalid_token</div>
+<div class="line">login_required</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">Indique l’erreur à l’origine de la redirection vers la page de login</div>
+<div class="line">Déclenche l’affichage d’un message d’explication correspondant à l’erreur au-dessus du formulaire</div>
+<div class="line"><br /></div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p>next (optionnel)</p></td>
+<td><div class="line-block">
+<div class="line">string :</div>
+<div class="line">URL d’une ressource de l’application</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">Indique la page vers laquelle rediriger après login (utilisée dans la méthode POST)</div>
+<div class="line"><br /></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+<p><em>Exemple de requête :</em></p>
+<div class="souligne"><p><strong>ressource : /login?error=login_required&amp;next=%2Fdata%2Fsearch</strong></p></div>
+<div class="line-block">
+<div class="line">L’utilisateur vient d’être redirigé vers la page de login après avoir essayé d’accéder à la page /data/search sans être authentifié.</div>
+<div class="line"><br /></div>
+</div>
+<div class="figure align-default">
+<a class="reference internal image-reference" href="../_images/login_post.PNG"><img alt="../_images/login_post.PNG" src="../_images/login_post.PNG" style="width: 400px; height: 300px;" /></a>
+</div>
+<p><em>Réponses :</em></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 13%" />
+<col style="width: 30%" />
+<col style="width: 56%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Code</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>200</p></td>
+<td><p>html/text</p></td>
+<td><p>Page html contenant le formulaire de login ou un message d’accueil</p></td>
+</tr>
+<tr class="row-odd"><td><p>401</p></td>
+<td><p>html/text</p></td>
+<td><p>Page html contenant le formulaire de login précédé d’un message d’erreur</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+</div>
+<div class="section" id="post">
+<h2>post<a class="headerlink" href="#post" title="Lien permanent vers ce titre">¶</a></h2>
+<div class="line-block">
+<div class="line">Méthode déclenchée par la soumission du formulaire de login. Intéragit avec l’API pour authentifier l’utilisateur. Si l’authentification aboutit, token d’authentification, id d’utilisateur, nom et prénom d’utilisateurs sont ajoutés à la session. Sinon un message d’erreur est affiché.</div>
+</div>
+<p><em>Paramètres (formulaire):</em></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 26%" />
+<col style="width: 57%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Champ</p></th>
+<th class="head"><p>Valeurs possibles</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>name (obligatoire)</p></td>
+<td><p>string</p></td>
+<td><p>Le nom de l’utilisateur à authentifier</p></td>
+</tr>
+<tr class="row-odd"><td><p>firstnamename(obligatoire)</p></td>
+<td><p>string</p></td>
+<td><p>Le prénom de l’utilisateur à authentifier</p></td>
+</tr>
+<tr class="row-even"><td><p>next - URL (optionnel)</p></td>
+<td><div class="line-block">
+<div class="line">string :</div>
+<div class="line">URL d’une ressource de l’application</div>
+</div>
+</td>
+<td><p>Indique la page vers laquelle rediriger après login. (utilisée dans la méthode POST)</p></td>
+</tr>
+</tbody>
+</table>
+<p><em>Paramètres (URL) :</em></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 15%" />
+<col style="width: 27%" />
+<col style="width: 59%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Champ</p></th>
+<th class="head"><p>Valeurs possibles</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>next - URL (optionnel)</p></td>
+<td><div class="line-block">
+<div class="line">string :</div>
+<div class="line">URL d’une ressource de l’application</div>
+</div>
+</td>
+<td><p>Indique la page vers laquelle rediriger après login.</p></td>
+</tr>
+</tbody>
+</table>
+<p><em>Réponses :</em></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 11%" />
+<col style="width: 25%" />
+<col style="width: 64%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Code</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>200 (redirection)</p></td>
+<td><div class="line-block">
+<div class="line">html/text</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">Redirection vers la page de login si succès</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><p>/ (redirection)</p></td>
+<td><div class="line-block">
+<div class="line">html/text</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">Redirection vers la page à laquelle l’utilisateur tentait d’accéder si paramètre « next » spécifié</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><p>401</p></td>
+<td><div class="line-block">
+<div class="line">html/text</div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line">Page contenant le formulaire de login et un message d’erreur d’identifiants</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+<p><em>Exemple de requête post infructueuse :</em></p>
+<div class="souligne"><p><strong>ressource : /login</strong></p></div>
+<div class="figure align-default" id="id3">
+<a class="reference internal image-reference" href="../_images/login_post_faux.PNG"><img alt="../_images/login_post_faux.PNG" src="../_images/login_post_faux.PNG" style="width: 400px; height: 300px;" /></a>
+<p class="caption"><span class="caption-text">formulaire</span><a class="headerlink" href="#id3" title="Lien permanent vers cette image">¶</a></p>
+</div>
+<div class="figure align-default" id="id4">
+<a class="reference internal image-reference" href="../_images/login_post_echec.PNG"><img alt="../_images/login_post_echec.PNG" src="../_images/login_post_echec.PNG" style="width: 400px; height: 300px;" /></a>
+<p class="caption"><span class="caption-text">soumission (envoi requête POST)</span><a class="headerlink" href="#id4" title="Lien permanent vers cette image">¶</a></p>
+</div>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table des matières</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Login</a><ul>
+<li><a class="reference internal" href="#get">get</a></li>
+<li><a class="reference internal" href="#post">post</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Sujet précédent</h4>
+  <p class="topless"><a href="../accueil/accueil.html"
+                        title="Chapitre précédent">Index</a></p>
+  <h4>Sujet suivant</h4>
+  <p class="topless"><a href="logout.html"
+                        title="Chapitre suivant">Logout</a></p>
+  <div role="note" aria-label="source link">
+    <h3>Cette page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/authentification/login.rst.txt"
+            rel="nofollow">Montrer le code source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Recherche rapide</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Index général"
+             >index</a></li>
+        <li class="right" >
+          <a href="logout.html" title="Logout"
+             >suivant</a> |</li>
+        <li class="right" >
+          <a href="../accueil/accueil.html" title="Index"
+             >précédent</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">Documentation Techniques web 1.0.0</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Login</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Camille Chinatsu Solveig.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.2.
+    </div>
+  </body>
+</html>

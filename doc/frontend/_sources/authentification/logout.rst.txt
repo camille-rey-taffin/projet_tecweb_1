@@ -1,0 +1,25 @@
+******
+Logout
+******
+
+**ressource : /logout**
+
+get
+====
+
+| Lance une requête de logout à l’api backend. La session est alors réinitialisée, puis l’utilisateur est redirigé vers la page de login avec une message affichant la bonne déconnexion. Une page d’erreur est renvoyée si on essaie d’y accéder sans être connecté.
+
+.. figure:: img/logout_get.PNG
+   :width: 400px
+   :height: 300px
+
+   Redirection après logout
+
+*Réponses :*
+
+================= ======================================= ========================================================================
+Code              Type                                    Description
+================= ======================================= ========================================================================
+200 (redirection) html/text                               Page de login avec un message confirmant la déconnexion
+400               html/text                               Page html affichant l’erreur 400, mauvaise requête
+================= ======================================= ========================================================================

@@ -1,0 +1,68 @@
+*********************
+Recherche de données
+*********************
+
+**ressource : /data/search**
+
+get
+===
+
+| Cette page n’est pas accessible si l’utilisateur n’est pas connecté (token dans la session).
+| Affiche la page de recherche de données. Contient un formulaire de recherche et un bouton « recherche avancée » permet d’afficher davantage de critères de recherche. La soumission du formulaire renvoie une requête get sur la même page, avec les champs du formulaires passés en paramètres. 
+| Si un formulaire a été soumis, les résultats de la recherche sont affichés sous forme d’un tableau en dessous du formulaire.
+
+.. figure:: img/recherche.PNG
+   :width: 400px
+   :height: 300px
+
+   Page de recherche
+
+*Paramètres :*
+ | !! Tous les champs sont optionnels
+
+================== ======= =======================================================================================================================================================
+Champ              Type    Description
+================== ======= =======================================================================================================================================================
+name               String  Nom du point géographique
+geonameid          String  ID entier de l'enregistrement dans la base de données des noms géographiques
+asciiname          String  nom du point géographique en caractères ascii simples
+alternatenames     String  noms alternatifs, séparés par des virgules, noms ascii automatiquement translittérés, attribut de commodité du tableau des noms alternatifs
+latitude           String  latitude en degrés décimaux
+longitude          String  longitude in decimal degrees
+feature_class      String  voir http://www.geonames.org/export/codes.html
+feature_code       String  voir http://www.geonames.org/export/codes.html.
+country_code       String  Code pays ISO-3166 à 2 lettres, 2 caractères
+cc2                String  autres codes pays, séparés par des virgules, code pays ISO-3166 à 2 lettres
+admin1_code        String  fipscode (susceptible d'être modifié en code iso), voir les exceptions ci-dessous, voir le fichier admin1Codes.txt pour les noms d'affichage de ce code
+admin2_code        String  code pour la deuxième division administrative, un comté aux États-Unis, voir le fichier admin2Codes.txt
+admin3_code        String  code d’administration de troisième niveau
+admin4_code        String  code d'administration de quatrième niveau
+population         String  bigint
+elevation          String  modèle numérique d'élévation, srtm3 ou gtopo30, élévation moyenne de 3''x3'' (environ 90mx90m) ou 30''x30''
+dem                String  modèle numérique d'élévation, srtm3 ou gtopo30, élévation moyenne de 3''x3'' (environ 90mx90m) ou 30''x30''
+timezone           String  le fuseau horaire iana id (voir le fichier timeZone.txt)
+modification_date  String  date de la dernière modification au format aaaa-MM-jj
+================== ======= =======================================================================================================================================================
+
+|
+
+*Réponses :*
+
+================= ======================================= ===============================================================================================================
+Code              Type                                    Description
+================= ======================================= ===============================================================================================================
+200               html/text                               Page de recherche, avec les résultats si formulaire soumis.
+401               html/text                               Redirection vers la page de login avec un message d’erreur si l’utilisateur n’est pas connecté
+401               html/text                               Redirection vers la page de login avec un message d'erreur si le token d’authentification est expiré / invalide
+================= ======================================= ===============================================================================================================
+
+|
+| Exemple de recherche
+
+**ressource : https://projet-tecweb-frontend.herokuapp.com/data/search?name=Paris**
+
+.. figure:: img/recherche_resul.PNG
+   :width: 400px
+   :height: 300px
+
+   Resultat de recherche

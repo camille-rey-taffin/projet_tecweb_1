@@ -1,0 +1,189 @@
+
+
+<!doctype html>
+
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Consultation de données &#8212; Documentation Techniques web 1.0.0</title>
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bizstyle.css" type="text/css" />
+    
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/translations.js"></script>
+    <script src="../_static/bizstyle.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Recherche" href="../search.html" />
+    <link rel="next" title="Modification de données" href="modification.html" />
+    <link rel="prev" title="Recherche de données" href="recherche.html" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <!--[if lt IE 9]>
+    <script src="_static/css3-mediaqueries.js"></script>
+    <![endif]-->
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Index général"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="modification.html" title="Modification de données"
+             accesskey="N">suivant</a> |</li>
+        <li class="right" >
+          <a href="recherche.html" title="Recherche de données"
+             accesskey="P">précédent</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">Documentation Techniques web 1.0.0</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Consultation de données</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="consultation-de-donnees">
+<h1>Consultation de données<a class="headerlink" href="#consultation-de-donnees" title="Lien permanent vers ce titre">¶</a></h1>
+<div class="souligne"<p><strong>ressource : /data/&lt;geonameid&gt;</strong></p></div>
+<div class="section" id="get">
+<h2>get<a class="headerlink" href="#get" title="Lien permanent vers ce titre">¶</a></h2>
+<div class="line-block">
+<div class="line">Cette page n’est pas accessible si l’utilisateur n’est pas connecté (token dans la session).</div>
+<div class="line">Affiche les informations de l’élément de geonameid passé dans l’URL sous forme d’un tableau. Un bouton « modifier » affiche un formulaire de modification, qui envoie une requête POST sur la même page une fois soumis. Un bouton « supprimer » lance une requête DELETE sur la même page (via requête AJAX en Javascript), qui permet de supprimer la ressource.</div>
+<div class="line"><br /></div>
+</div>
+<div class="figure align-default" id="id1">
+<a class="reference internal image-reference" href="../_images/consul_ex.PNG"><img alt="../_images/consul_ex.PNG" src="../_images/consul_ex.PNG" style="width: 400px; height: 400px;" /></a>
+<p class="caption"><span class="caption-text">Page de consultation de données (geoname id 2968815)</span><a class="headerlink" href="#id1" title="Lien permanent vers cette image">¶</a></p>
+</div>
+<p><em>Paramètres :</em></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 19%" />
+<col style="width: 8%" />
+<col style="width: 74%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Champ</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>geonameid <strong>(obligatoire)</strong></p></td>
+<td><p>string</p></td>
+<td><p>geonameid (identifiant) du lieu à consulter</p></td>
+</tr>
+<tr class="row-odd"><td><p>modif (optionnel)</p></td>
+<td><p>Boolean</p></td>
+<td><p>Si True, affiche un message de confirmation de modification des données au dessus du tableau d’informations</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p><em>Réponses :</em></p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 12%" />
+<col style="width: 7%" />
+<col style="width: 80%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Code</p></th>
+<th class="head"><p>Type</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>200</p></td>
+<td><p>html/text</p></td>
+<td><p>Page de consultation des données avec informations sous forme de tableau</p></td>
+</tr>
+<tr class="row-odd"><td><p>401</p></td>
+<td><p>html/text</p></td>
+<td><p>Redirection vers la page de login avec un message d’erreur si l’utilisateur n’est pas connecté</p></td>
+</tr>
+<tr class="row-even"><td><p>401</p></td>
+<td><p>html/text</p></td>
+<td><p>Redirection vers la page de login avec un message d’erreur si le token d’authentification est expiré / invalide</p></td>
+</tr>
+<tr class="row-odd"><td><p>404</p></td>
+<td><p>html/text</p></td>
+<td><p>Affiche un message d’erreur 404 de lieu non trouvé.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table des matières</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Consultation de données</a><ul>
+<li><a class="reference internal" href="#get">get</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Sujet précédent</h4>
+  <p class="topless"><a href="recherche.html"
+                        title="Chapitre précédent">Recherche de données</a></p>
+  <h4>Sujet suivant</h4>
+  <p class="topless"><a href="modification.html"
+                        title="Chapitre suivant">Modification de données</a></p>
+  <div role="note" aria-label="source link">
+    <h3>Cette page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/manipulation/consultation.rst.txt"
+            rel="nofollow">Montrer le code source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Recherche rapide</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="Index général"
+             >index</a></li>
+        <li class="right" >
+          <a href="modification.html" title="Modification de données"
+             >suivant</a> |</li>
+        <li class="right" >
+          <a href="recherche.html" title="Recherche de données"
+             >précédent</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">Documentation Techniques web 1.0.0</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Consultation de données</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2021, Camille Chinatsu Solveig.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.5.2.
+    </div>
+  </body>
+</html>

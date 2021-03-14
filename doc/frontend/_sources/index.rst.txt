@@ -1,0 +1,39 @@
+##########################################
+Documentation Front-end!
+##########################################
+
+.. figure:: accueil/img/Index.PNG
+   :width: 600px
+   :height: 400px
+
+
+
+| Bonjour!
+| Vous pouvez trouver ici la documentation technique de l'application front-end.
+| Cette application est créée grâce à la bibliothèque FLask, et les pages html générées grâce à des templates Jinja2, du css et du javascript.
+
+
+Contenu :
+=============
+.. toctree::
+   :maxdepth: 2
+   :caption: Index
+
+   accueil/accueil
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Authentification
+
+   authentification/login
+   authentification/logout
+
+.. toctree::
+   :maxdepth: 5
+   :caption: Manipulation
+
+   manipulation/recherche
+   manipulation/consultation
+   manipulation/modification
+   manipulation/suppression
+   manipulation/ajout

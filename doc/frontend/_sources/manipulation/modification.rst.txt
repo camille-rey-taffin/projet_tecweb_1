@@ -1,0 +1,78 @@
+************************
+Modification de données
+************************
+
+**ressource : /data/<geonameid>**
+
+post
+===
+| Cette requête n’est pas possible si l’utilisateur n’est pas connecté (token dans la session).
+| Envoie une requête de modification de données à l’api backend. Renvoie la page de consultation des données modifiées, avec un message de confirmation de modification des données.
+
+|
+
+*Paramètres(URL) :*
+
+=========================== =========== =============================================
+Champ                       Type        Description
+=========================== =========== =============================================
+geonameid **(obligatoire)** string      geonameid (identifiant) du lieu à consulter
+=========================== =========== =============================================
+
+|
+
+*Paramètres(formulaire) :*
+
+| !! Tous les champs sont optionnels
+
+================== ======= =======================================================================================================================================================
+Champ              Type    Description
+================== ======= =======================================================================================================================================================
+name               String  Nom du point géographique
+asciiname          String  nom du point géographique en caractères ascii simples
+alternatenames     String  noms alternatifs, séparés par des virgules, noms ascii automatiquement translittérés, attribut de commodité du tableau des noms alternatifs
+latitude           String  latitude en degrés décimaux
+longitude          String  longitude in decimal degrees
+feature_class      String  voir http://www.geonames.org/export/codes.html
+feature_code       String  voir http://www.geonames.org/export/codes.html.
+country_code       String  Code pays ISO-3166 à 2 lettres, 2 caractères
+cc2                String  autres codes pays, séparés par des virgules, code pays ISO-3166 à 2 lettres
+admin1_code        String  fipscode (susceptible d'être modifié en code iso), voir les exceptions ci-dessous, voir le fichier admin1Codes.txt pour les noms d'affichage de ce code
+admin2_code        String  code pour la deuxième division administrative, un comté aux États-Unis, voir le fichier admin2Codes.txt
+admin3_code        String  code d’administration de troisième niveau
+admin4_code        String  code d'administration de quatrième niveau
+population         String  bigint
+elevation          String  modèle numérique d'élévation, srtm3 ou gtopo30, élévation moyenne de 3''x3'' (environ 90mx90m) ou 30''x30''
+dem                String  modèle numérique d'élévation, srtm3 ou gtopo30, élévation moyenne de 3''x3'' (environ 90mx90m) ou 30''x30''
+timezone           String  le fuseau horaire iana id (voir le fichier timeZone.txt)
+================== ======= =======================================================================================================================================================
+
+|
+
+*Réponses :*
+
+================= ========== ======================================================================================================================
+Code              Type       Description
+================= ========== ======================================================================================================================
+200               html/text  Redirection vers la page de consultation des données modifiées, avec un message de confirmation de création de données
+401               html/text  Redirection vers la page de login avec un message d’erreur si l’utilisateur n’est pas connecté
+401               html/text  Redirection vers la page de login avec un message d'erreur si le token d’authentification est expiré / invalide
+404               html/text  Affiche un message d’erreur 404 de lieu non trouvé.
+================= ========== ======================================================================================================================
+
+
+|　Exemple de modification des données 7777777 (créées pour le test):
+
+**ressource : /data/7777777**
+
+.. figure:: img/modif_ex.PNG
+   :width: 400px
+   :height: 300px
+
+   Formulaire
+
+.. figure:: img/modif_rep.PNG
+   :width: 400px
+   :height: 300px
+
+   Réponse
